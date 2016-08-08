@@ -26,6 +26,7 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+
    <security-constraint>
         <web-resource-collection>
             <web-resource-name>admin</web-resource-name>

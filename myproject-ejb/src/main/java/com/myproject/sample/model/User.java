@@ -17,8 +17,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private List<String> roles = new ArrayList<>();
-
     @OneToMany(fetch = FetchType.EAGER)
     private List<Project> projects = new ArrayList<>();
 
