@@ -4,12 +4,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nsokil on 21.07.2016.
- */
-
 @Entity
-@Table(name="user")
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue
@@ -20,6 +16,8 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    private List<String> roles = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Project> projects = new ArrayList<>();

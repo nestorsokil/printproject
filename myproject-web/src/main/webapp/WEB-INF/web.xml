@@ -5,64 +5,32 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1" id="data-fabric-web-tool">
 
+
     <servlet>
-        <servlet-name>loginServlet</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>loginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <!--<servlet>
-        <servlet-name>home</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>loginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-    <servlet-name>home</servlet-name>
-    <url-pattern>/j_security_check</url-pattern>
-</servlet-mapping>-->
-
-<!--
-  <servlet>
         <servlet-name>logoutServlet</servlet-name>
-        <servlet-class>servlet.LogoutServlet</servlet-class>
+        <jsp-file>/admin/fake-logout.jsp</jsp-file>
     </servlet>
-
-    <servlet>
-        <servlet-name>loginServlet</servlet-name>
-        <servlet-class>servlet.LoginServlet</servlet-class>
-    </servlet>
-&lt;!&ndash;
-
-    <servlet>
-        <servlet-name>loginServlet</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-&ndash;&gt;
 
     <servlet-mapping>
         <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <jsp-file>/admin/fake-login.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
--->
 
    <security-constraint>
         <web-resource-collection>
             <web-resource-name>admin</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
+            <url-pattern>/login</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>
@@ -71,17 +39,6 @@
         </auth-constraint>
     </security-constraint>
 
-<!--    <security-constraint>
-    <web-resource-collection>
-        <web-resource-name>login form</web-resource-name>
-        <url-pattern>/login</url-pattern>
-        <http-method>GET</http-method>
-        <http-method>POST</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-        <role-name>*</role-name>
-    </auth-constraint>
-    </security-constraint>-->
 
     <login-config>
         <auth-method>FORM</auth-method>

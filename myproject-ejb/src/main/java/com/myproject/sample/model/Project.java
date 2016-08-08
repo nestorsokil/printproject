@@ -2,10 +2,6 @@ package com.myproject.sample.model;
 
 import javax.persistence.*;
 
-/**
- * Created by nsokil on 21.07.2016.
- */
-
 @Entity
 public class Project {
     @Id
@@ -17,6 +13,8 @@ public class Project {
     @ManyToOne
     private Storage storage;
 
+    @ManyToOne
+    private User user;
 
     public Long getId() {
         return id;

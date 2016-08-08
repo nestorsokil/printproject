@@ -4,10 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * Created by nsokil on 21.07.2016.
- */
-
 @Entity
 public class Storage {
     @Id
