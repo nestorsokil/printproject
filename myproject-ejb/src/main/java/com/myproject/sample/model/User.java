@@ -1,5 +1,7 @@
 package com.myproject.sample.model;
 
+
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,8 @@ import java.util.List;
 @Table(name = "app_user")
 public class User {
     @Id
-    @GeneratedValue
+    @org.hibernate.annotations.GenericGenerator(name = "generator", strategy = "increment")
+    @GeneratedValue(generator = "generator")
     private Long id;
 
     @Column(nullable = false, unique = true)

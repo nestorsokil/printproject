@@ -1,9 +1,10 @@
 package com.myproject.sample.dao;
 
-
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 public class GenericDaoImpl<T> implements GenericDao<T>{
 
@@ -29,11 +30,16 @@ public class GenericDaoImpl<T> implements GenericDao<T>{
     }
 
     public void delete(T entity){
-        em.remove(entity);
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     public T update(T entity){
         return em.merge(entity);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> findAll(){
+        return em.createQuery("from " + entityClass.getSimpleName()).getResultList();
     }
 
 }

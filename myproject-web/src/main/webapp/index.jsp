@@ -1,19 +1,48 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h3>Public page</h3>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"   
+		integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous">
+		</script>
 
-<c:if test="${empty pageContext.request.userPrincipal}">
-<a href="${pageContext.request.contextPath}/login">Log in</a>
-</c:if>
+	<script src="resources/js/user-rest.js"></script>
+	</head>
+	
+	<body>
 
-<% if (request.isUserInRole("ADMIN")) { %>
-<a href="admin/adm-page.jsp">Admin Page</a>
-<% } %>
+		<h3>Public page</h3>
 
-<br />
+		<c:if test="${empty pageContext.request.userPrincipal}">
+		<a href="${pageContext.request.contextPath}/login">Log in</a>
+		</c:if>
 
-<c:if test="${not empty pageContext.request.userPrincipal}">
-    <c:out value="${pageContext.request.userPrincipal.name}" /> <nobr/>
-    <a href="${pageContext.request.contextPath}/logout">Log out</a>
-</c:if>
+		<c:if test="${not empty pageContext.request.userPrincipal}">
+        	<c:out value="${pageContext.request.userPrincipal.name}" /> <nobr/>
+        	<a href="${pageContext.request.contextPath}/logout">Log out</a>
+        </c:if>
+
+		<% if (request.isUserInRole("ADMIN")) { %>
+		<a href="admin/adm-page.jsp">Admin Page</a>
+		<% } %>
+
+		<br />
+
+		<table id="allUsers">
+			<thead>
+			
+				<th class="deleteUser">ID</th>
+				<th>Username</th>
+				<th>Password</th>
+				
+			</thead>
+		</table>
+
+		<input id="name" type="text"></input>
+		<input id="password" type="text"></input>
+		<button class="createUser">New user</button>
+
+	</body>
+	
+</html>
