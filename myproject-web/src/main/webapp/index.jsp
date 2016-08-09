@@ -32,16 +32,25 @@
 		<table id="allUsers">
 			<thead>
 			
-				<th class="deleteUser">ID</th>
+				<th>ID</th>
 				<th>Username</th>
 				<th>Password</th>
-				
+				<th>Role</th>
 			</thead>
+
 		</table>
 
 		<input id="name" type="text"></input>
 		<input id="password" type="text"></input>
+		<input id="role" type="text"></input>
 		<button class="createUser">New user</button>
+
+		<form action="rest/upload" method="post" enctype="multipart/form-data">
+           <p>
+            Choose a file : <input type="file" name="file" />
+           </p>
+           <input type="submit" value="Upload" />
+        </form>
 
 	</body>
 	

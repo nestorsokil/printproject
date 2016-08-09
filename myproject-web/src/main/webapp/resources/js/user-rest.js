@@ -11,6 +11,7 @@ var getAll = function(){
 			table += '<td>' + user.id + '</td>'
 					+ '<td>' + user.username + '</td>'
 					+ '<td>' + user.password + '</td>'
+					+ '<td>' + user.role + '</td>'
 					+ '<td><button class="deleteUser" data-id="'
 						+ user.id + '">Delete</button></td></tr>';
 		});
@@ -31,7 +32,11 @@ var deleteUser = function(){
     }
 
 var createUser = function(){
-    var user = {username: $('#name').val(), password: $('#password').val()};
+    var user = {
+        username: $('#name').val(),
+        password: $('#password').val(),
+        role: $('#role').val()
+        };
     var u_json = JSON.stringify(user);
 
     $.ajax({
