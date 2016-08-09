@@ -5,6 +5,6 @@
       http://www.jboss.com/xml/ns/javaee
       http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd">
 
-    <security-domain>java:/jaas/prop-domain</security-domain>
+    <security-domain>java:/jaas/db-domain</security-domain>
 
 </jboss-web>

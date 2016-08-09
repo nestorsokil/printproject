@@ -19,7 +19,7 @@ public class FileUploader {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadZippedFile(MultipartFormDataInput multipartFormDataInput) {
+    public Response uploadFile(MultipartFormDataInput multipartFormDataInput) {
         String uploadFilePath = "";
         try {
             Map<String, List<InputPart>> map = multipartFormDataInput.getFormDataMap();
@@ -30,9 +30,9 @@ public class FileUploader {
                 String fileName = getFileName(multivaluedMap);
 
                 if(null != fileName && !"".equalsIgnoreCase(fileName)){
-                    InputStream inputStream = inputPart.getBody(InputStream.class, null);
-                    uploadFilePath = writeToFileServer(inputStream, fileName);
-                    inputStream.close();
+                    try( InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
+                        uploadFilePath = writeToFileServer(inputStream, fileName);
+                    }
                 }
             }
         }catch (IOException ioe){

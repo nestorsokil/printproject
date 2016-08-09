@@ -8,6 +8,7 @@
 		</script>
 
 	<script src="resources/js/user-rest.js"></script>
+	<script src="resources/js/files-rest.js"></script>
 	</head>
 	
 	<body>
@@ -44,6 +45,11 @@
 		<input id="password" type="text"></input>
 		<input id="role" type="text"></input>
 		<button class="createUser">New user</button>
+
+		<br />
+		<br />
+
+		<div id="files"></div>
 
 		<form action="rest/upload" method="post" enctype="multipart/form-data">
            <p>
