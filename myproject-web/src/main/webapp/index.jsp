@@ -7,7 +7,6 @@
 		integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous">
 		</script>
 
-	<script src="resources/js/user-rest.js"></script>
 	<script src="resources/js/files-rest.js"></script>
 	</head>
 	
@@ -28,25 +27,6 @@
 		<a href="admin/adm-page.jsp">Admin Page</a>
 		<% } %>
 
-		<br />
-
-		<table id="allUsers">
-			<thead>
-			
-				<th>ID</th>
-				<th>Username</th>
-				<th>Password</th>
-				<th>Role</th>
-			</thead>
-
-		</table>
-
-		<input id="name" type="text"></input>
-		<input id="password" type="text"></input>
-		<input id="role" type="text"></input>
-		<button class="createUser">New user</button>
-
-		<br />
 		<br />
 
 		<div id="files"></div>

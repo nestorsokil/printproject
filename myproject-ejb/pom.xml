@@ -21,10 +21,16 @@
            <version>5.1.0.Final</version>
        </dependency>
 
+       <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+       <dependency>
+           <groupId>org.apache.pdfbox</groupId>
+           <artifactId>pdfbox</artifactId>
+           <version>2.0.2</version>
+       </dependency>
 
 
-      <!-- Declare the APIs we depend on and need for compilation. All of 
-         them are provided by JBoss AS 7 -->
+       <!-- Declare the APIs we depend on and need for compilation. All of
+          them are provided by JBoss AS 7 -->
 
       <!-- Import the EJB API, we use provided scope as the API is included 
          in JBoss AS 7 -->
