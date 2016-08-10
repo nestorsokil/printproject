@@ -1,22 +1,20 @@
 package com.myproject.sample.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Storage {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String path;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

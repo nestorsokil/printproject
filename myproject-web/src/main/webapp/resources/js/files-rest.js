@@ -1,5 +1,7 @@
 $('document').ready(function(){
-    getAllFiles();
+    if(!!document.getElementById('files')){
+        getAllFiles();
+    }
 });
 
 var getAllFiles = function(){

@@ -1,4 +1,4 @@
-package com.myproject.sample.service;
+package com.myproject.sample.imgprocess;
 
 public interface ImageScaler {
     String STORAGE = System.getenv("JBOSS_HOME") +

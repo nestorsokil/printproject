@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Project> projects = new ArrayList<>();
 
     public Long getId() {

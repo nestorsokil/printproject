@@ -14,6 +14,7 @@ public class Project {
     private Storage storage;
 
     @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false)
     private User user;
 
     public Long getId() {
@@ -30,5 +31,21 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Storage getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Storage storage) {
+        this.storage = storage;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

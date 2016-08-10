@@ -1,4 +1,4 @@
-package com.myproject.sample.service;
+package com.myproject.sample.imgprocess;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

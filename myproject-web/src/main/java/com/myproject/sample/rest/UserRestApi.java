@@ -1,7 +1,6 @@
 package com.myproject.sample.rest;
 
 import com.myproject.sample.model.User;
-import com.myproject.sample.service.IMagickImageScaler;
 import com.myproject.sample.service.UserService;
 
 import javax.inject.Inject;

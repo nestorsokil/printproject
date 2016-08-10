@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class GenericServiceImpl<T> implements GenericService<T> {
     @Inject
-    private GenericDao<T> dao;
+    protected GenericDao<T> dao;
 
     @Override
     public void create(T entity){

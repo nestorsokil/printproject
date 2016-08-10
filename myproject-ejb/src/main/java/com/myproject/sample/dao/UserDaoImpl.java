@@ -17,4 +17,12 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
         entity.setPassword(hashed);
         return super.update(entity);
     }
+
+    @Override
+    public User findByUsername(String username){
+        //TODO: use criteria api
+        return (User) em.createQuery("SELECT u FROM User u WHERE u.username=:uname")
+                .setParameter("uname", username)
+                .getSingleResult();
+    }
 }
