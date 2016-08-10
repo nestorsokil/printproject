@@ -6,7 +6,6 @@ public interface ImageScaler {
 
     String identify(String filename);
 
-    void scale(String filename, long width, long height);
+    void scale(String source, String target, int width, int height);
 
-    void scale(String filename, long percentage);
 }

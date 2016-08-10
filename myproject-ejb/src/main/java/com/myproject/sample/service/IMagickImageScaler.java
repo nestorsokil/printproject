@@ -11,10 +11,12 @@ public class IMagickImageScaler implements ImageScaler{
     @Override
     public String identify(String filename) {
         String result = "not found";
-        ProcessBuilder processBuilder = new ProcessBuilder("CMD", "/C", "magick.exe", "identify", STORAGE + filename);
+        ProcessBuilder processBuilder = new ProcessBuilder("CMD", "/C",
+                "magick.exe", "identify", STORAGE + filename);
         processBuilder.directory(IM_DIR);
+
         try {
-            Process process = processBuilder.inheritIO().start();
+            Process process = processBuilder.start();
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder builder = new StringBuilder();
@@ -31,37 +33,23 @@ public class IMagickImageScaler implements ImageScaler{
         return result;
     }
 
-    @Override
-    public void scale(String filename, long width, long height){
-        String params = width + "x" + height;
-        scale(filename, params);
-    }
 
     @Override
-    public void scale(String filename, long percentage){
-        String params = percentage + "%";
-        scale(filename, params);
-    }
-
-
-    private void scale(String filename, String params){
+    public void scale(String source, String target, int width, int height){
         try {
-            new ProcessBuilder("CMD", "/C",
-                    "magick.exe", "convert", STORAGE + filename,
-                    "-resize", params, STORAGE + "resized-" + filename)
+            new ProcessBuilder("CMD", "/C", "magick.exe", "convert", STORAGE + source,
+                    "-resize", width + "x" + height + "!", STORAGE + target)
                     .directory(IM_DIR)
                     .inheritIO()
                     .start();
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) {
         ImageScaler im = new IMagickImageScaler();
         System.out.println(im.identify("Koala.jpg"));
-        im.scale("Koala.jpg", 150);
+        im.scale("Koala.jpg", "resizedIM.jpg", 150, 150);
     }
-
 }
