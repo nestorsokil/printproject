@@ -1,8 +1,8 @@
 <head>
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"
 	 integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-	<script src="resources/js/user-rest.js"></script>
-</head>
+	<script src="resources/js/adm-rest.js"></script>
+	</head>
     <body>
         <h3>admin page</h3>
 
@@ -24,6 +24,14 @@
 
         <br />
         <br />
+
+        <a href="#" id="dloadConf">Download configs</a>
+        <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+             <p>
+                Choose a file : <input type="file" name="file" />
+             </p>
+          <input type="submit" value="Upload" />
+        </form>
 
 	</body>
 

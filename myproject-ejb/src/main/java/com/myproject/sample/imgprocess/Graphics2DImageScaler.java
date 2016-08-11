@@ -1,6 +1,9 @@
 package com.myproject.sample.imgprocess;
 
+import com.myproject.sample.config.ApplicationConfigurator;
+
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,5 +1,6 @@
 $('document').ready(function(){
 	getAll();
+	setRefs();
 	$(document).on('click', '.deleteUser', deleteUser);
 	$(document).on('click', '.createUser', createUser);
 });
@@ -55,6 +56,11 @@ var createUser = function(){
         data: u_json,
         success: getAll
     });
+}
 
+var setRefs = function(){
+    var baseUrl = getAppBaseUrl();
+    $('#dloadConf').attr('href', baseUrl + '/rest/config/dload');
+    $('#upload-form').attr('action', baseUrl + '/rest/config/upload');
 }
 

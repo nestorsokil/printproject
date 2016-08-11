@@ -1,5 +1,6 @@
 package com.myproject.sample.service;
 
+import com.myproject.sample.config.ApplicationConfigurator;
 import com.myproject.sample.dao.StorageDao;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.Storage;
@@ -17,9 +18,12 @@ public class StorageServiceImpl implements StorageService{
 
     @Inject private ProjectService projectService;
 
+    @Inject private ApplicationConfigurator applicationConfigurator;
+
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {
         Storage userStorage = getStorageById("storage_user");
+        String st = applicationConfigurator.getUserStoragePath();
 
         Project project = new Project();
         project.setName(fileName.substring(0, fileName.lastIndexOf(".")));
@@ -27,7 +31,7 @@ public class StorageServiceImpl implements StorageService{
         project.setStorage(userStorage);
         project = projectService.update(project);
 
-        String projectPath = userStorage.getPath() + "\\UUID" + project.getId();
+        String projectPath = st + "\\UUID" + project.getId();
         File projectFolder = new File(projectPath);
         if(!projectFolder.mkdir())
             throw new IOException();

@@ -1,16 +1,31 @@
 package com.myproject.sample.imgprocess;
 
+import com.myproject.sample.config.ApplicationConfigurator;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class IMagickImageScaler implements ImageScaler{
+    //TODO: use appropriate storages
+    //for debug:
     private static final File IM_DIR = new File("C:\\ImageMagick-7.0.2-Q16");
+
+    /*
+    //for 'production':
+
+    @Inject private ApplicationConfigurator appConfig;
+    private File IM_DIR;
+    @PostConstruct
+    private void init(){
+        System.out.println(appConfig.getImageMagickHome());
+        IM_DIR = new File(appConfig.getImageMagickHome());
+    }*/
 
     @Override
     public String identify(String filename) {

@@ -1,7 +1,6 @@
 package com.myproject.sample.rest;
 
 import com.myproject.sample.model.User;
-import com.myproject.sample.rest.constants.REST_CONST;
 import com.myproject.sample.service.StorageService;
 import com.myproject.sample.service.UserService;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
@@ -18,9 +17,9 @@ import java.util.Map;
 
 @Path("/upload")
 public class FileUploader {
-    @Inject UserService userService;
+    @Inject private UserService userService;
 
-    @Inject StorageService storageService;
+    @Inject private StorageService storageService;
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -36,7 +35,7 @@ public class FileUploader {
                 MultivaluedMap<String, String> multivaluedMap = inputPart.getHeaders();
                 String fileName = getFileName(multivaluedMap);
 
-                if(null != fileName && !"".equalsIgnoreCase(fileName)){
+                if(fileName != null && !"".equalsIgnoreCase(fileName)){
                     try(InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
                         uploadFilePath = storageService.saveProject(uploader, inputStream, fileName);
                     }
@@ -55,7 +54,6 @@ public class FileUploader {
         String[] contentDisposition = multivaluedMap.getFirst("Content-Disposition").split(";");
 
         for (String filename : contentDisposition) {
-
             if ((filename.trim().startsWith("filename"))) {
                 String[] name = filename.split("=");
                 String exactFileName = name[1].trim().replaceAll("\"", "");

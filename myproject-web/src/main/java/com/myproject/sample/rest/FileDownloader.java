@@ -2,7 +2,6 @@ package com.myproject.sample.rest;
 
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
-import com.myproject.sample.rest.constants.REST_CONST;
 import com.myproject.sample.service.ProjectService;
 import com.myproject.sample.service.UserService;
 
@@ -45,7 +44,8 @@ public class FileDownloader {
     @Path("/{filename}")
     @GET
     public Response downloadFile(@PathParam("filename") String filename){
-        File file = new File(REST_CONST.SAVE_FOLDER + filename);
+        File file = new File(System.getenv("JBOSS_HOME") +
+                "\\standalone\\my_uploads\\" + filename);
 
         Response.ResponseBuilder responseBuilder = Response.ok(file);
         responseBuilder.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
