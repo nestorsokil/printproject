@@ -24,7 +24,7 @@
             <p>
                Choose a file : <input type="file" name="file" />
             </p>
-            <input type="submit" value="Upload" />
+            <input type="submit" value="Upload" accept=".zip" />
         </form>
 
     </body>

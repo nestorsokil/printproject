@@ -10,11 +10,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class Graphics2DImageScaler implements ImageScaler{
+    @Inject private ApplicationConfigurator appConfig;
 
     @Override
     public String identify(String filename){
         BufferedImage sourceImg;
-        File sourceFile = new File(ImageScaler.STORAGE + filename);
+        File sourceFile = new File(appConfig.getTempStoragePath() + File.separator + filename);
         try {
             sourceImg = ImageIO.read(sourceFile);
         }catch (IOException ioe){
@@ -31,9 +32,9 @@ public class Graphics2DImageScaler implements ImageScaler{
     @Override
     public void scale(String source, String target, int width, int height){
         try {
-            BufferedImage sourceImg = ImageIO.read(new File(ImageScaler.STORAGE + source));
+            BufferedImage sourceImg = ImageIO.read(new File(appConfig.getTempStoragePath() + File.separator + source));
             BufferedImage targetImg = getResizedImg(sourceImg, width, height);
-            File targetFile = new File(ImageScaler.STORAGE + target);
+            File targetFile = new File(appConfig.getTempStoragePath() + File.separator + target);
             String ext = target.substring(target.lastIndexOf('.') + 1, target.length());
 
             ImageIO.write(targetImg, ext , targetFile);

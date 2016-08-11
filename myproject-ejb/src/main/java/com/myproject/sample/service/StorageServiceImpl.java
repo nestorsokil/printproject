@@ -1,6 +1,5 @@
 package com.myproject.sample.service;
 
-import com.myproject.sample.config.ApplicationConfigurator;
 import com.myproject.sample.dao.StorageDao;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.Storage;
@@ -11,40 +10,32 @@ import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-
 public class StorageServiceImpl implements StorageService{
 
     @Inject private StorageDao storageDao;
 
     @Inject private ProjectService projectService;
 
-    @Inject private ApplicationConfigurator applicationConfigurator;
-
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {
         Storage userStorage = getStorageById("storage_user");
-        String st = applicationConfigurator.getUserStoragePath();
-
         Project project = new Project();
         project.setName(fileName.substring(0, fileName.lastIndexOf(".")));
         project.setUser(uploader);
         project.setStorage(userStorage);
         project = projectService.update(project);
 
-        String projectPath = st + "\\UUID" + project.getId();
+        String projectPath = userStorage.getPath() + File.separator + project.getId();
         File projectFolder = new File(projectPath);
         if(!projectFolder.mkdir())
-            throw new IOException();
-
-        ZipInputStream zipIn = new ZipInputStream(fileStream);
-        ZipEntry entry = zipIn.getNextEntry();
-        while (entry != null) {
-            String filePath = projectPath + File.separator + entry.getName();
-            extractFile(zipIn, filePath);
-            zipIn.closeEntry();
-            entry = zipIn.getNextEntry();
+            throw new IOException("Could not create folder");
+        try {
+            unzipProject(fileStream, projectPath);
+        }catch (IOException ioe){
+            projectFolder.delete();
+            projectService.delete(project);
+            throw ioe;
         }
-        zipIn.close();
         return projectPath;
     }
 
@@ -53,13 +44,28 @@ public class StorageServiceImpl implements StorageService{
         return storageDao.findById(id);
     }
 
-    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-        byte[] bytesIn = new byte[4096];
-        int read;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
+    private void unzipProject(InputStream fileStream, String projectPath) throws IOException{
+        try (ZipInputStream zipIn = new ZipInputStream(fileStream)){
+
+            ZipEntry entry = zipIn.getNextEntry();
+            while (entry != null) {
+                String filePath = projectPath + File.separator + entry.getName();
+                extractFile(zipIn, filePath);
+                zipIn.closeEntry();
+                entry = zipIn.getNextEntry();
+            }
+        }catch (IOException ioe){
+            ioe.printStackTrace();
         }
-        bos.close();
+    }
+
+    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException{
+        try(BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
+            byte[] bytesIn = new byte[4096];
+            int read;
+            while ((read = zipIn.read(bytesIn)) != -1) {
+                bos.write(bytesIn, 0, read);
+            }
+        }
     }
 }

@@ -20,12 +20,15 @@ import java.io.*;
 public class ConfigurationController {
     @Inject private UserService userService;
 
+    @Inject private ApplicationConfigurator config;
+
     @GET
     @Path("/dload")
     public Response downloadConfig(@Context SecurityContext context) throws IOException{
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream stream = new FileInputStream("C:/app-properties/application.properties");
-
+        String sep = File.separator;
+        String pathToProperties = config.getJbossHome() + sep + "standalone"
+                + sep + "app-properties" + sep + "application.properties";
+        InputStream stream = new FileInputStream(pathToProperties);
         Response.ResponseBuilder builder = Response.ok(stream);
         builder.header("Content-Disposition", "attachment; filename=\"application.properties\"");
         return builder.build();
@@ -41,7 +44,10 @@ public class ConfigurationController {
 
         byte[] data = form.getFileData();
         if(data == null){return Response.status(400).entity("data is null").build();}
-        File file = new File("C:/app-properties/application.properties");
+        String sep = File.separator;
+        String pathToProperties = config.getJbossHome() + sep + "standalone"
+                + sep + "app-properties" + sep + "application.properties";
+        File file = new File(pathToProperties);
         try (FileOutputStream fos = new FileOutputStream(file)){
             fos.write(data);
         }catch (IOException ioe){ioe.printStackTrace();}

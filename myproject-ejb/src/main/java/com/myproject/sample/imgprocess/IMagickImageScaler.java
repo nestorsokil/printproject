@@ -12,33 +12,31 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IMagickImageScaler implements ImageScaler{
-    //TODO: use appropriate storages
-    //for debug:
-    private static final File IM_DIR = new File("C:\\ImageMagick-7.0.2-Q16");
 
-    /*
-    //for 'production':
+    /*//for debug:
+    private static final File IM_DIR = new File("C:\\ImageMagick-7.0.2-Q16");*/
 
     @Inject private ApplicationConfigurator appConfig;
     private File IM_DIR;
+
     @PostConstruct
     private void init(){
         System.out.println(appConfig.getImageMagickHome());
         IM_DIR = new File(appConfig.getImageMagickHome());
-    }*/
+    }
 
     @Override
     public String identify(String filename) {
-        List<String> commands = Arrays.asList("identify", STORAGE + filename);
+        List<String> commands = Arrays.asList("identify", appConfig.getTempStoragePath() + filename);
         return executeCommand(commands);
     }
 
     @Override
     public void scale(String source, String target, int width, int height){
         List<String> command = Arrays.asList(IM_DIR.toString() + "\\convert",
-                STORAGE + source,
+                appConfig.getTempStoragePath() + source,
                 "-resize", width + "x" + height + "!",
-                STORAGE + target);
+                appConfig.getTempStoragePath() + target);
         executeCommand(command);
     }
 

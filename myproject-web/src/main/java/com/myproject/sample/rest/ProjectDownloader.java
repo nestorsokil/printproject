@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/download")
-public class FileDownloader {
+public class ProjectDownloader {
     @Inject private UserService userService;
 
     @Inject private ProjectService projectService;

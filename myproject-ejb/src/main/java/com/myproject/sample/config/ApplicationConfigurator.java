@@ -8,4 +8,6 @@ public interface ApplicationConfigurator {
     String getUserStoragePath();
 
     String getTempStoragePath();
+
+    String getJbossHome();
 }

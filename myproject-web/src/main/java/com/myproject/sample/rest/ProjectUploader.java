@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 @Path("/upload")
-public class FileUploader {
+public class ProjectUploader {
     @Inject private UserService userService;
 
     @Inject private StorageService storageService;
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(MultipartFormDataInput multipartFormDataInput, @Context SecurityContext context) {
+    public Response uploadProject(MultipartFormDataInput multipartFormDataInput, @Context SecurityContext context) {
         User uploader = userService.findByUsername(context.getUserPrincipal().getName());
 
         String uploadFilePath = "";
@@ -43,10 +43,10 @@ public class FileUploader {
             }
         }catch (IOException ioe){
             ioe.printStackTrace();
-            return Response.status(400).entity("File not saved").build();
+            return Response.status(400).entity("Project not saved").build();
         }
 
-        return Response.status(200).entity("File saved to " + uploadFilePath).build();
+        return Response.status(200).entity("Project saved to " + uploadFilePath).build();
     }
 
     private String getFileName(MultivaluedMap<String, String> multivaluedMap) {
