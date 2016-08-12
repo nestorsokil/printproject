@@ -81,8 +81,12 @@ public class Graphics2DProcessor implements ProjectProcessor{
         child.setY(parent.getY() + child.getY());
     }
 
-    private void drawImage(ImageXml image, Graphics2D projectCanvas, String projectFolder)throws IOException{
+    private void drawImage(ImageXml image, Graphics2D projectCanvas, String projectFolder) throws IOException{
         String pathToTempImg = scaleImage(image, projectFolder);
+
+        //wtf? async problems
+        try{Thread.sleep(500);}catch (InterruptedException ie){}
+
         BufferedImage imgBuff = createBuffFromFile(pathToTempImg);
         projectCanvas.drawImage(imgBuff, image.getX(), image.getY(), null);
     }
@@ -92,17 +96,23 @@ public class Graphics2DProcessor implements ProjectProcessor{
         String sep = File.separator;
 
         String imgRef = imageXml.getImageRef();
-        String sourceImgName = projectFolder + sep + imageXml.getImageRef();
+        String sourceImgName = projectFolder + sep + imgRef;
 
+        String ext = imgRef.substring(imgRef.lastIndexOf('.') + 1, imgRef.length());
+        imgRef = imgRef.substring(0, imgRef.lastIndexOf("."));
 
-        String targetImgName = appConfig.getTempStoragePath() + sep + imageXml.getImageRef() + width + "x" + height;
+        String targetImgName = appConfig.getTempStoragePath() + sep + imgRef + width + "x" + height + "." + ext;
         scaler.scale(sourceImgName, targetImgName, width, height);
 
         return targetImgName;
     }
 
     private BufferedImage createBuffFromFile(String path) throws IOException {
-        return ImageIO.read(new File(path));
+        File tempImg = new File(path);
+        BufferedImage im = ImageIO.read(tempImg);
+        tempImg.delete();
+
+        return im;
     }
 
     private void drawText(TextXml text, Graphics2D projectCanvas){

@@ -1,17 +1,19 @@
 package com.myproject.sample.xmlmodel;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class AbstractXmlContainer extends AbstractXmlElement {
     @XmlElement(name = "image")
-    protected List<ImageXml> images;
+    protected List<ImageXml> images = new LinkedList<>();
 
     @XmlElement(name = "block")
-    protected List<BlockXml> blocks;
+    protected List<BlockXml> blocks = new LinkedList<>();
 
     @XmlElement(name = "text")
-    protected List<TextXml> texts;
+    protected List<TextXml> texts = new LinkedList<>();
 
     public List<ImageXml> getImages() {
         return images;

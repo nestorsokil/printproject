@@ -23,22 +23,21 @@ public class IMagickImageScaler implements ImageScaler{
 
     @PostConstruct
     private void init(){
-        System.out.println(appConfig.getImageMagickHome());
         IM_DIR = new File(appConfig.getImageMagickHome());
     }
 
     @Override
     public String identify(String filename) {
-        List<String> commands = Arrays.asList("identify", appConfig.getTempStoragePath() + filename);
+        List<String> commands = Arrays.asList("identify", filename);
         return executeCommand(commands);
     }
 
     @Override
     public void scale(String source, String target, int width, int height){
         List<String> command = Arrays.asList(IM_DIR.toString() + "\\convert",
-                appConfig.getTempStoragePath() + source,
+                source,
                 "-resize", width + "x" + height + "!",
-                appConfig.getTempStoragePath() + target);
+                target);
         executeCommand(command);
     }
 

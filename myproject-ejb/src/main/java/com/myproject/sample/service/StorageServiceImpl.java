@@ -42,7 +42,6 @@ public class StorageServiceImpl implements StorageService{
         }
 
         try {
-
             processor.process(project);
         }catch (UnsuccessfulProcessingException upe){
             upe.getCause().printStackTrace();
