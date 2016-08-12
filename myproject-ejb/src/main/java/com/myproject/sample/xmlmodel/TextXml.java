@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TextXml extends AbstractXmlElement{
 
-    @XmlAttribute
-    protected String value = "sample text";
+    @XmlAttribute(name = "value")
+    protected String value;
 
     @XmlAttribute(name = "font-size")
     protected int fontSize;

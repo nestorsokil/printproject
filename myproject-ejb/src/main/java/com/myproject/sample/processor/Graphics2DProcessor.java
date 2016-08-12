@@ -5,6 +5,8 @@ import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.xmlmodel.*;
+import org.apache.commons.io.FileUtils;
+
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -52,6 +54,8 @@ public class Graphics2DProcessor implements ProjectProcessor{
         }catch (IOException ioe){
             throw new UnsuccessfulProcessingException(ioe);
         }
+
+
     }
 
     private void processXmlContainer(AbstractXmlContainer containerXml, Graphics2D canvas, String pathToProject)
@@ -83,10 +87,6 @@ public class Graphics2DProcessor implements ProjectProcessor{
 
     private void drawImage(ImageXml image, Graphics2D projectCanvas, String projectFolder) throws IOException{
         String pathToTempImg = scaleImage(image, projectFolder);
-
-        //wtf? async problems
-        try{Thread.sleep(500);}catch (InterruptedException ie){}
-
         BufferedImage imgBuff = createBuffFromFile(pathToTempImg);
         projectCanvas.drawImage(imgBuff, image.getX(), image.getY(), null);
     }
@@ -111,7 +111,6 @@ public class Graphics2DProcessor implements ProjectProcessor{
         File tempImg = new File(path);
         BufferedImage im = ImageIO.read(tempImg);
         tempImg.delete();
-
         return im;
     }
 

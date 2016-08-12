@@ -50,6 +50,7 @@ public class IMagickImageScaler implements ImageScaler{
                     .inheritIO()
                     .start();
 
+            process.waitFor();
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder builder = new StringBuilder();
@@ -59,8 +60,8 @@ public class IMagickImageScaler implements ImageScaler{
                 builder.append(System.getProperty("line.separator"));
             }
             output = builder.toString();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
+        }catch (IOException | InterruptedException ie){
+            ie.printStackTrace();
         }
         return output;
     }

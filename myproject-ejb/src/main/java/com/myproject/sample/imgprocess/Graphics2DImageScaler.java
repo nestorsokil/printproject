@@ -34,9 +34,9 @@ public class Graphics2DImageScaler implements ImageScaler{
     @Override
     public void scale(String source, String target, int width, int height){
         try {
-            BufferedImage sourceImg = ImageIO.read(new File(appConfig.getTempStoragePath() + File.separator + source));
+            BufferedImage sourceImg = ImageIO.read(new File(source));
             BufferedImage targetImg = getResizedImg(sourceImg, width, height);
-            File targetFile = new File(appConfig.getTempStoragePath() + File.separator + target);
+            File targetFile = new File(target);
             String ext = target.substring(target.lastIndexOf('.') + 1, target.length());
 
             ImageIO.write(targetImg, ext , targetFile);
