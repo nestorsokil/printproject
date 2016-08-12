@@ -5,7 +5,7 @@ import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.xmlmodel.*;
-import org.apache.commons.io.FileUtils;
+
 
 
 import javax.imageio.ImageIO;
@@ -47,8 +47,9 @@ public class Graphics2DProcessor implements ProjectProcessor{
             throw new UnsuccessfulProcessingException(ioe);
         }
 
-        String pathToResult = projectPath + File.separator + project.getName() + "-processed.png";
+        String pathToResult = projectPath + File.separator + "processed" + File.separator + "processed.png";
         File processedFile = new File(pathToResult);
+        processedFile.mkdirs();
         try {
             ImageIO.write(image, "png", processedFile);
         }catch (IOException ioe){

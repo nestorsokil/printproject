@@ -1,5 +1,7 @@
 package com.myproject.sample.rest;
 
+import com.myproject.sample.config.ApplicationConfigurator;
+import com.myproject.sample.dto.ProcessedProjectDto;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.ProjectService;
@@ -24,31 +26,32 @@ public class ProjectDownloader {
 
     @Inject private ProjectService projectService;
 
+    @Inject private ApplicationConfigurator appConfig;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getFileList(@Context SecurityContext context){
+    public List<ProcessedProjectDto> getFileList(@Context SecurityContext context){
         User user = userService.findByUsername(context.getUserPrincipal().getName());
-        List<String> result = new ArrayList<>();
+        List<ProcessedProjectDto> result = new ArrayList<>();
         List<Project> projects;
         if(user.getRole().equals("ADMIN"))
             projects = projectService.findAll();
         else
             projects = user.getProjects();
         for(Project p : projects){
-            result.add(p.getName());
+            result.add(new ProcessedProjectDto(p));
         }
         return result;
     }
 
-    //TODO: update method
-    @Path("/{filename}")
+    @Path("/{id}")
     @GET
-    public Response downloadFile(@PathParam("filename") String filename){
-        File file = new File(System.getenv("JBOSS_HOME") +
-                "\\standalone\\my_uploads\\" + filename);
+    public Response downloadFile(@PathParam("id") String id){
+        File file = new File(appConfig.getUserStoragePath() + File.separator + id + File.separator + "processed"
+                + File.separator + "processed.png");
 
         Response.ResponseBuilder responseBuilder = Response.ok(file);
-        responseBuilder.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+        responseBuilder.header("Content-Disposition", "attachment; filename=\"" + "processed.png" + "\"");
         return responseBuilder.build();
     }
 }
