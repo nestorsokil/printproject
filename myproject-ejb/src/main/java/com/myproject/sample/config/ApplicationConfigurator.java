@@ -1,7 +1,9 @@
 package com.myproject.sample.config;
 
 public interface ApplicationConfigurator {
-    Boolean useImScaler();
+    String IMAGICK_SCALER_BEAN_NAME = "ImScaler";
+
+    String GRAPHICS2D_SCALER_BEAN_NAME = "graphics2DScaler";
 
     String getImageMagickHome();
 
@@ -10,4 +12,6 @@ public interface ApplicationConfigurator {
     String getTempStoragePath();
 
     String getJbossHome();
+
+    String getScalerBeanName();
 }

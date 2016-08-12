@@ -1,9 +1,11 @@
 package com.myproject.sample.service;
 
 import com.myproject.sample.dao.StorageDao;
+import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.Storage;
 import com.myproject.sample.model.User;
+import com.myproject.sample.processor.ProjectProcessor;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -15,6 +17,8 @@ public class StorageServiceImpl implements StorageService{
     @Inject private StorageDao storageDao;
 
     @Inject private ProjectService projectService;
+
+    @Inject private ProjectProcessor processor;
 
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {
@@ -35,6 +39,13 @@ public class StorageServiceImpl implements StorageService{
             projectFolder.delete();
             projectService.delete(project);
             throw ioe;
+        }
+
+        try {
+
+            processor.process(project);
+        }catch (UnsuccessfulProcessingException upe){
+            upe.getCause().printStackTrace();
         }
         return projectPath;
     }

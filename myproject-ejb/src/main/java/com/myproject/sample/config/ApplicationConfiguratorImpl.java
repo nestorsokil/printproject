@@ -56,9 +56,10 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
         return tempStoragePath;
     }
 
-    @Override public Boolean useImScaler(){
-        return useIm;
+    @Override public String getScalerBeanName() {
+        if(useIm){
+            return ApplicationConfigurator.IMAGICK_SCALER_BEAN_NAME;
+        }
+        return ApplicationConfigurator.GRAPHICS2D_SCALER_BEAN_NAME;
     }
-
-
 }

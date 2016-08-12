@@ -4,6 +4,7 @@ import com.myproject.sample.config.ApplicationConfigurator;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+@Named(ApplicationConfigurator.IMAGICK_SCALER_BEAN_NAME)
 public class IMagickImageScaler implements ImageScaler{
 
     /*//for debug:

@@ -4,11 +4,13 @@ import com.myproject.sample.config.ApplicationConfigurator;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@Named(ApplicationConfigurator.GRAPHICS2D_SCALER_BEAN_NAME)
 public class Graphics2DImageScaler implements ImageScaler{
     @Inject private ApplicationConfigurator appConfig;
 
