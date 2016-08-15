@@ -1,5 +1,6 @@
 package com.myproject.sample.service;
 
+import com.myproject.sample.Processor;
 import com.myproject.sample.dao.StorageDao;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.model.Project;
@@ -9,14 +10,12 @@ import com.myproject.sample.processor.ProjectProcessor;
 import com.myproject.sample.util.ProjectFileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.tools.ant.util.DateUtils;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Qualifier;
 import java.io.*;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class StorageServiceImpl implements StorageService{
 
@@ -24,7 +23,8 @@ public class StorageServiceImpl implements StorageService{
 
     @Inject private ProjectService projectService;
 
-    @Inject private ProjectProcessor processor;
+    @Inject @Processor("PDF") private ProjectProcessor processor;
+
 
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {

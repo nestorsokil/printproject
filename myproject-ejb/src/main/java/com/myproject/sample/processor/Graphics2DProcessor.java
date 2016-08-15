@@ -1,5 +1,6 @@
 package com.myproject.sample.processor;
 
+import com.myproject.sample.Processor;
 import com.myproject.sample.imgprocess.FactoryProducedScaler;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@Processor("PNG")
 public class Graphics2DProcessor implements ProjectProcessor{
     @Inject private XmlParser parser;
 
