@@ -1,5 +1,6 @@
 package com.myproject.sample.processor;
 
+import com.myproject.sample.FactoryProducedScaler;
 import com.myproject.sample.config.ScalerBeanFactory;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
@@ -21,7 +22,9 @@ import java.util.List;
 public class Graphics2DProcessor implements ProjectProcessor{
     @Inject private XmlParser parser;
 
-    @Inject private ScalerBeanFactory scalerBeanFactory;
+    @Inject
+    @FactoryProducedScaler
+    private ImageScaler imageScaler;
 
     @Inject private TempStorageResourceLocator tempLocator;
 
@@ -86,14 +89,13 @@ public class Graphics2DProcessor implements ProjectProcessor{
         projectCanvas.drawImage(imgBuff, image.getX(), image.getY(), null);
     }
 
-    private String scaleImage(ImageXml imageXml, Project project){
+    private String scaleImage(ImageXml imageXml, Project project) throws IOException{
         int width = imageXml.getWidth(), height = imageXml.getHeight();
-        ImageScaler scaler = scalerBeanFactory.getScalerBean();
         String imgRef = imageXml.getImageRef();
 
         File sourceImg = userLocator.locate(project, imgRef);
         File targetImg = tempLocator.locate(ProjectFileUtils.makeTempImgName(imgRef, width, height));
-        scaler.scale(sourceImg, targetImg, width, height);
+        imageScaler.scale(sourceImg, targetImg, width, height);
 
         return targetImg.getAbsolutePath();
     }

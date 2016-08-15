@@ -16,18 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IMagickImageScaler implements ImageScaler{
-
-    /*//for debug:
-    private static final File IM_DIR = new File("C:\\ImageMagick-7.0.2-Q16");*/
-
-    private ApplicationConfigurator appConfig;
-
     private File IM_DIR;
 
-    @Inject
-    public IMagickImageScaler(ApplicationConfigurator appConfig){
-        this.appConfig = appConfig;
-        IM_DIR = new File(appConfig.getProperty(AppProperty.IM_HOME));
+    public IMagickImageScaler(String pathToIM){
+        IM_DIR = new File(pathToIM);
     }
     @Override
     public ImageInfo identify(File source) throws IOException {
@@ -40,7 +32,6 @@ public class IMagickImageScaler implements ImageScaler{
         int height = Integer.parseInt(resolution[1]);
         long size = Long.parseLong(resolution[6].replaceAll("[^0-9]", ""));
         return new ImageInfo(name, width, height, size);
-
     }
 
     @Override
