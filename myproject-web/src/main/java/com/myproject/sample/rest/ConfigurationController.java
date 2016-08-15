@@ -1,5 +1,6 @@
 package com.myproject.sample.rest;
 
+import com.myproject.sample.config.AppProperty;
 import com.myproject.sample.config.ApplicationConfigurator;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.UserService;
@@ -25,10 +26,7 @@ public class ConfigurationController {
     @GET
     @Path("/dload")
     public Response downloadConfig(@Context SecurityContext context) throws IOException{
-        String sep = File.separator;
-        String pathToProperties = config.getJbossHome() + sep + "standalone"
-                + sep + "app-properties" + sep + "application.properties";
-        InputStream stream = new FileInputStream(pathToProperties);
+        InputStream stream = new FileInputStream(getPropertiesFile());
         Response.ResponseBuilder builder = Response.ok(stream);
         builder.header("Content-Disposition", "attachment; filename=\"application.properties\"");
         return builder.build();
@@ -37,22 +35,24 @@ public class ConfigurationController {
     @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadConfig(@MultipartForm FileUploadForm form, @Context SecurityContext context) {
+    public Response uploadConfig(@MultipartForm FileUploadForm form,
+                                 @Context SecurityContext context) {
+
         User uploader = userService.findByUsername(context.getUserPrincipal().getName());
         if(!uploader.getRole().equals("ADMIN"))
             return Response.status(403).entity("Access denied").build();
 
         byte[] data = form.getFileData();
-        if(data == null){return Response.status(400).entity("data is null").build();}
-        String sep = File.separator;
-        String pathToProperties = config.getJbossHome() + sep + "standalone"
-                + sep + "app-properties" + sep + "application.properties";
-        File file = new File(pathToProperties);
-        try (FileOutputStream fos = new FileOutputStream(file)){
+        try (FileOutputStream fos = new FileOutputStream(getPropertiesFile())){
             fos.write(data);
         }catch (IOException ioe){ioe.printStackTrace();}
 
         return Response.status(200).entity("Configuration saved").build();
+    }
+
+    private File getPropertiesFile(){
+        return new File(config.getProperty(AppProperty.JBOSS_CONFIG_DIR)
+                + File.separator + "application.properties");
     }
 
 }

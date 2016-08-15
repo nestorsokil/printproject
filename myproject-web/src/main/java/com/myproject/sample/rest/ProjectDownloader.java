@@ -1,7 +1,9 @@
 package com.myproject.sample.rest;
 
+import com.myproject.sample.config.AppProperty;
 import com.myproject.sample.config.ApplicationConfigurator;
 import com.myproject.sample.dto.ProcessedProjectDto;
+import com.myproject.sample.locator.UserStorageResourceLocator;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.ProjectService;
@@ -26,7 +28,7 @@ public class ProjectDownloader {
 
     @Inject private ProjectService projectService;
 
-    @Inject private ApplicationConfigurator appConfig;
+    @Inject private UserStorageResourceLocator locator;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,9 +49,8 @@ public class ProjectDownloader {
     @Path("/{id}")
     @GET
     public Response downloadFile(@PathParam("id") String id){
-        File file = new File(appConfig.getUserStoragePath() + File.separator + id + File.separator + "processed"
-                + File.separator + "processed.png");
-
+        Project project = projectService.findById(id);
+        File file = locator.locate(project, "processed" + File.separator + "processed.png");
         Response.ResponseBuilder responseBuilder = Response.ok(file);
         responseBuilder.header("Content-Disposition", "attachment; filename=\"" + "processed.png" + "\"");
         return responseBuilder.build();

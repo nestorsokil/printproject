@@ -13,12 +13,13 @@ import java.util.Properties;
 public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
     @Inject private StorageDao storageDao;
 
-    //TODO: enum
     private String imageMagickHome;
 
     private String userStoragePath;
 
     private String tempStoragePath;
+
+    private String jbossConfig;
 
     private Boolean useIm;
 
@@ -26,10 +27,9 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
         userStoragePath = storageDao.findById("storage_user").getPath();
         tempStoragePath = storageDao.findById("storage_temp").getPath();
 
-        String sep = File.separator;
+        jbossConfig = System.getProperty("jboss.server.config.dir");
 
-        String path = getJbossHome() + sep + "standalone" + sep + "app-properties" + sep + "application.properties";
-
+        String path =  jbossConfig + File.separator + "application.properties";
         Properties properties = new Properties();
         try (InputStream in = new FileInputStream(path)){
             properties.load(in);
@@ -40,26 +40,22 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
         }
     }
 
-    @Override public String getJbossHome(){
-        return System.getenv("JBOSS_HOME");
-    }
-
-    @Override public String getImageMagickHome() {
-        return imageMagickHome;
-    }
-
-    @Override public String getUserStoragePath() {
-        return userStoragePath;
-    }
-
-    @Override public String getTempStoragePath() {
-        return tempStoragePath;
-    }
-
-    @Override public String getScalerBeanName() {
-        if(useIm){
-            return ApplicationConfigurator.IMAGICK_SCALER_BEAN_NAME;
+    public String getProperty(AppProperty property){
+        switch (property){
+            case IM_HOME: return imageMagickHome;
+            case JBOSS_HOME: return System.getenv("JBOSS_HOME");
+            case JBOSS_CONFIG_DIR: return jbossConfig;
+            case USER_STORAGE_PATH: return userStoragePath;
+            case TEMP_STORAGE_PATH: return tempStoragePath;
         }
-        return ApplicationConfigurator.GRAPHICS2D_SCALER_BEAN_NAME;
+
+        throw new RuntimeException();
+    }
+
+    @Override public ScalerType getScalerBeanQualifier() {
+        if(useIm){
+            return ScalerType.IMAGE_MAGICK_SCALER;
+        }
+        return ScalerType.GRAPHICS_2D_SCALER;
     }
 }

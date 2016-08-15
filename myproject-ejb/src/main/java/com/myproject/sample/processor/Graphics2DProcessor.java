@@ -1,16 +1,16 @@
 package com.myproject.sample.processor;
 
-import com.myproject.sample.config.ApplicationConfigurator;
+import com.myproject.sample.config.ScalerBeanFactory;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
+import com.myproject.sample.locator.TempStorageResourceLocator;
+import com.myproject.sample.locator.UserStorageResourceLocator;
 import com.myproject.sample.model.Project;
+import com.myproject.sample.util.ProjectFileUtils;
 import com.myproject.sample.xmlmodel.*;
-
-
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,17 +21,15 @@ import java.util.List;
 public class Graphics2DProcessor implements ProjectProcessor{
     @Inject private XmlParser parser;
 
-    @Inject
-    @Named(ApplicationConfigurator.IMAGICK_SCALER_BEAN_NAME)
-    private ImageScaler scaler;
+    @Inject private ScalerBeanFactory scalerBeanFactory;
 
-    @Inject private ApplicationConfigurator appConfig;
+    @Inject private TempStorageResourceLocator tempLocator;
 
-    private String beanQualifier;
+    @Inject private UserStorageResourceLocator userLocator;
 
     @Override public void process(Project project) throws UnsuccessfulProcessingException{
-        String projectPath = appConfig.getUserStoragePath() + File.separator + project.getId();
-        File xmlScheme = new File(projectPath + File.separator + "project.xml");
+
+        File xmlScheme = userLocator.locate(project, "project.xml");
         ProjectXml projectXml;
         try {
             projectXml = parser.parseXml(xmlScheme);
@@ -42,29 +40,26 @@ public class Graphics2DProcessor implements ProjectProcessor{
         BufferedImage image = new BufferedImage(projectXml.getWidth(), projectXml.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D canvas = image.createGraphics();
         try {
-            processXmlContainer(projectXml, canvas, projectPath);
+            processXmlContainer(projectXml, canvas, project);
         }catch (IOException ioe){
             throw new UnsuccessfulProcessingException(ioe);
         }
 
-        String pathToResult = projectPath + File.separator + "processed" + File.separator + "processed.png";
-        File processedFile = new File(pathToResult);
+        File processedFile = userLocator.locate(project, "processed" + File.separator + "processed.png");
         processedFile.mkdirs();
         try {
             ImageIO.write(image, "png", processedFile);
         }catch (IOException ioe){
             throw new UnsuccessfulProcessingException(ioe);
         }
-
-
     }
 
-    private void processXmlContainer(AbstractXmlContainer containerXml, Graphics2D canvas, String pathToProject)
+    private void processXmlContainer(AbstractXmlContainer containerXml, Graphics2D canvas, Project project)
             throws IOException{
         List<ImageXml> images = containerXml.getImages();
         for(ImageXml im : images){
             setElementAbsoluteCoordinates(containerXml, im);
-            drawImage(im, canvas, pathToProject);
+            drawImage(im, canvas, project);
         }
 
         List<TextXml> texts = containerXml.getTexts();
@@ -76,9 +71,8 @@ public class Graphics2DProcessor implements ProjectProcessor{
         List<BlockXml> blocks = containerXml.getBlocks();
         for(BlockXml bl : blocks){
             setElementAbsoluteCoordinates(containerXml, bl);
-            processXmlContainer(bl, canvas, pathToProject);
+            processXmlContainer(bl, canvas, project);
         }
-
     }
 
     private void setElementAbsoluteCoordinates(AbstractXmlElement parent, AbstractXmlElement child){
@@ -86,26 +80,22 @@ public class Graphics2DProcessor implements ProjectProcessor{
         child.setY(parent.getY() + child.getY());
     }
 
-    private void drawImage(ImageXml image, Graphics2D projectCanvas, String projectFolder) throws IOException{
-        String pathToTempImg = scaleImage(image, projectFolder);
+    private void drawImage(ImageXml image, Graphics2D projectCanvas, Project project) throws IOException{
+        String pathToTempImg = scaleImage(image, project);
         BufferedImage imgBuff = createBuffFromFile(pathToTempImg);
         projectCanvas.drawImage(imgBuff, image.getX(), image.getY(), null);
     }
 
-    private String scaleImage(ImageXml imageXml, String projectFolder){
+    private String scaleImage(ImageXml imageXml, Project project){
         int width = imageXml.getWidth(), height = imageXml.getHeight();
-        String sep = File.separator;
-
+        ImageScaler scaler = scalerBeanFactory.getScalerBean();
         String imgRef = imageXml.getImageRef();
-        String sourceImgName = projectFolder + sep + imgRef;
 
-        String ext = imgRef.substring(imgRef.lastIndexOf('.') + 1, imgRef.length());
-        imgRef = imgRef.substring(0, imgRef.lastIndexOf("."));
+        File sourceImg = userLocator.locate(project, imgRef);
+        File targetImg = tempLocator.locate(ProjectFileUtils.makeTempImgName(imgRef, width, height));
+        scaler.scale(sourceImg, targetImg, width, height);
 
-        String targetImgName = appConfig.getTempStoragePath() + sep + imgRef + width + "x" + height + "." + ext;
-        scaler.scale(sourceImgName, targetImgName, width, height);
-
-        return targetImgName;
+        return targetImg.getAbsolutePath();
     }
 
     private BufferedImage createBuffFromFile(String path) throws IOException {

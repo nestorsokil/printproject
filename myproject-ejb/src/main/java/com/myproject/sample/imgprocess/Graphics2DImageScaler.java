@@ -1,6 +1,7 @@
 package com.myproject.sample.imgprocess;
 
 import com.myproject.sample.config.ApplicationConfigurator;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -10,39 +11,26 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-@Named(ApplicationConfigurator.GRAPHICS2D_SCALER_BEAN_NAME)
 public class Graphics2DImageScaler implements ImageScaler{
     @Inject private ApplicationConfigurator appConfig;
 
     @Override
-    public String identify(String filename){
-        BufferedImage sourceImg;
-        File sourceFile = new File(appConfig.getTempStoragePath() + File.separator + filename);
-        try {
-            sourceImg = ImageIO.read(sourceFile);
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-            return "not found";
-        }
-
-        String colorModelInfo = sourceImg.getColorModel().toString();
-        String res = sourceImg.getWidth() + "x" + sourceImg.getHeight();
-        String size = sourceFile.length() / 1024 + "KB";
-        return colorModelInfo + "\n" + res + "\n" + size;
+    public ImageInfo identify(File source) throws IOException{
+        BufferedImage sourceImg = ImageIO.read(source);
+        long size = source.length() / 1024;
+        return new ImageInfo(FilenameUtils.getName(source.getName()),
+                sourceImg.getWidth(),
+                sourceImg.getHeight(), size);
     }
 
     @Override
-    public void scale(String source, String target, int width, int height){
-        try {
-            BufferedImage sourceImg = ImageIO.read(new File(source));
-            BufferedImage targetImg = getResizedImg(sourceImg, width, height);
-            File targetFile = new File(target);
-            String ext = target.substring(target.lastIndexOf('.') + 1, target.length());
+    public void scale(File source, File target, int width, int height) throws IOException{
+        BufferedImage sourceImg = ImageIO.read(source);
+        BufferedImage targetImg = getResizedImg(sourceImg, width, height);
+        String ext = FilenameUtils.getExtension(target.getName());
 
-            ImageIO.write(targetImg, ext , targetFile);
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
+        ImageIO.write(targetImg, ext , target);
+
     }
 
     private BufferedImage getResizedImg(BufferedImage original, int width, int height){
@@ -53,9 +41,5 @@ public class Graphics2DImageScaler implements ImageScaler{
         return resized;
     }
 
-    public static void main(String[] args) {
-        ImageScaler im = new Graphics2DImageScaler();
-        System.out.println(im.identify("Koala.jpg"));
-        im.scale("Koala.jpg", "resized2D.jpg", 150, 150);
-    }
+
 }

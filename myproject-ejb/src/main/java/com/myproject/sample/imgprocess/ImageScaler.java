@@ -1,7 +1,10 @@
 package com.myproject.sample.imgprocess;
 
-public interface ImageScaler {
-    String identify(String filename);
+import java.io.File;
+import java.io.IOException;
 
-    void scale(String source, String target, int width, int height);
+public interface ImageScaler {
+    ImageInfo identify(File source) throws IOException;
+
+    void scale(File source, File target, int width, int height) throws IOException;
 }

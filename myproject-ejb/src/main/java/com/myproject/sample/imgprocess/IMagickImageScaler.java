@@ -1,10 +1,13 @@
 package com.myproject.sample.imgprocess;
 
+import com.myproject.sample.config.AppProperty;
 import com.myproject.sample.config.ApplicationConfigurator;
+import com.myproject.sample.config.ApplicationConfiguratorImpl;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -12,36 +15,45 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
-@Named(ApplicationConfigurator.IMAGICK_SCALER_BEAN_NAME)
 public class IMagickImageScaler implements ImageScaler{
 
     /*//for debug:
     private static final File IM_DIR = new File("C:\\ImageMagick-7.0.2-Q16");*/
 
-    @Inject private ApplicationConfigurator appConfig;
+    private ApplicationConfigurator appConfig;
+
     private File IM_DIR;
 
-    @PostConstruct
-    private void init(){
-        IM_DIR = new File(appConfig.getImageMagickHome());
+    @Inject
+    public IMagickImageScaler(ApplicationConfigurator appConfig){
+        this.appConfig = appConfig;
+        IM_DIR = new File(appConfig.getProperty(AppProperty.IM_HOME));
+    }
+    @Override
+    public ImageInfo identify(File source) throws IOException {
+        List<String> commands = Arrays.asList("identify", source.getAbsolutePath());
+        String res = executeCommand(commands);
+        String[] output = res.split(" ");
+        String name = output[0];
+        String[] resolution = output[2].replaceAll("[^0-9]", " ").split(" ");
+        int width = Integer.parseInt(resolution[0]);
+        int height = Integer.parseInt(resolution[1]);
+        long size = Long.parseLong(resolution[6].replaceAll("[^0-9]", ""));
+        return new ImageInfo(name, width, height, size);
+
     }
 
     @Override
-    public String identify(String filename) {
-        List<String> commands = Arrays.asList("identify", filename);
-        return executeCommand(commands);
-    }
-
-    @Override
-    public void scale(String source, String target, int width, int height){
-        List<String> command = Arrays.asList(IM_DIR.toString() + "\\convert",
-                source,
+    public void scale(File source, File target, int width, int height)throws IOException{
+        List<String> command = Arrays.asList(
+                IM_DIR + "\\convert",
+                source.getAbsolutePath(),
                 "-resize", width + "x" + height + "!",
-                target);
+                target.getAbsolutePath());
         executeCommand(command);
     }
 
-    private String executeCommand(List<String> commands){
+    private String executeCommand(List<String> commands) throws IOException{
         String output = "";
         try{
             Process process = new ProcessBuilder()
@@ -60,15 +72,9 @@ public class IMagickImageScaler implements ImageScaler{
                 builder.append(System.getProperty("line.separator"));
             }
             output = builder.toString();
-        }catch (IOException | InterruptedException ie){
+        }catch (InterruptedException ie){
             ie.printStackTrace();
         }
         return output;
-    }
-
-    public static void main(String[] args) {
-        ImageScaler im = new IMagickImageScaler();
-        System.out.println(im.identify("Koala.jpg"));
-        im.scale("Koala.jpg", "resizedIM.jpg", 150, 150);
     }
 }
