@@ -8,9 +8,13 @@ import com.myproject.sample.model.User;
 import com.myproject.sample.processor.ProjectProcessor;
 import com.myproject.sample.util.ProjectFileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.tools.ant.util.DateUtils;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,7 +30,8 @@ public class StorageServiceImpl implements StorageService{
     public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {
         Storage userStorage = getStorageById("storage_user");
         Project project = new Project();
-        project.setName(FilenameUtils.getBaseName(fileName));
+        project.setName(FilenameUtils.getBaseName(fileName) + "("
+                + DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd HH:mm:ss") + ")");
         project.setUser(uploader);
         project.setStorage(userStorage);
         project = projectService.update(project);

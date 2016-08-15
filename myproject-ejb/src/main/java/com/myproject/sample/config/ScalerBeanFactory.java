@@ -1,6 +1,6 @@
 package com.myproject.sample.config;
 
-import com.myproject.sample.FactoryProducedScaler;
+import com.myproject.sample.imgprocess.FactoryProducedScaler;
 import com.myproject.sample.imgprocess.Graphics2DImageScaler;
 import com.myproject.sample.imgprocess.IMagickImageScaler;
 import com.myproject.sample.imgprocess.ImageScaler;

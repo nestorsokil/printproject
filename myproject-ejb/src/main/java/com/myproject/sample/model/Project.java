@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Project {
     @Id
-    @GenericGenerator(name="uuid_gen", strategy = "com.myproject.sample.UUIDGenerator")
+    @GenericGenerator(name="uuid_gen", strategy = "com.myproject.sample.model.UUIDGenerator")
     @GeneratedValue(generator = "uuid_gen")
     private String id;
 
