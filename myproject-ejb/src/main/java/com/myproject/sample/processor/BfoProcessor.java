@@ -17,8 +17,7 @@ import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.io.*;
 
-//TODO: REMOVE CODE DUPLICATION
-
+@Deprecated
 @Processor("PDF")
 public class BfoProcessor implements ProjectProcessor {
     @Inject private UserStorageResourceLocator userLocator;

@@ -17,7 +17,7 @@
     <body>
     	<h3>My Projects</h3>
     	<c:if test="${not empty pageContext.request.userPrincipal}">
-                	<c:out value="${pageContext.request.userPrincipal.name}" /> <nobr/>
+                	<c:out value="${pageContext.request.userPrincipal.name}" /> <nobr />
                 	<a href="${pageContext.request.contextPath}/logout">Log out</a>
                 	<br />
                 	<a href="projects.jsp">My Projects</a>

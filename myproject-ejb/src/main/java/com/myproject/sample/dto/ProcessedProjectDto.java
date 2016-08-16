@@ -7,9 +7,12 @@ public class ProcessedProjectDto {
 
     private String name;
 
+    private String thumbnail;
+
     public ProcessedProjectDto(Project project){
         this.id = project.getId();
         this.name = project.getName();
+
     }
 
     public String getId() {
@@ -26,5 +29,13 @@ public class ProcessedProjectDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

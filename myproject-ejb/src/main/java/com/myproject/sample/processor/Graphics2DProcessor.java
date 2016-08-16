@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@Deprecated
 @Processor("PNG")
 public class Graphics2DProcessor implements ProjectProcessor{
     @Inject private XmlParser parser;

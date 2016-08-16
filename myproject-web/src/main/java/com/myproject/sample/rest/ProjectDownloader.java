@@ -1,13 +1,14 @@
 package com.myproject.sample.rest;
 
-import com.myproject.sample.config.AppProperty;
-import com.myproject.sample.config.ApplicationConfigurator;
 import com.myproject.sample.dto.ProcessedProjectDto;
 import com.myproject.sample.locator.UserStorageResourceLocator;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.ProjectService;
 import com.myproject.sample.service.UserService;
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.util.Base64;
+
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,6 +20,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class ProjectDownloader {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ProcessedProjectDto> getFileList(@Context SecurityContext context){
+    public List<ProcessedProjectDto> getFileList(@Context SecurityContext context) throws IOException{
         User user = userService.findByUsername(context.getUserPrincipal().getName());
         List<ProcessedProjectDto> result = new ArrayList<>();
         List<Project> projects;
@@ -41,8 +44,13 @@ public class ProjectDownloader {
         else
             projects = user.getProjects();
         for(Project p : projects){
-            result.add(new ProcessedProjectDto(p));
+            ProcessedProjectDto dto = new ProcessedProjectDto(p);
+            File img = locator.locate(p, "processed"+File.separator+"processed.png");
+            byte[] bytes = IOUtils.toByteArray(new FileInputStream(img));
+            dto.setThumbnail(Base64.encodeBytes(bytes));
+            result.add(dto);
         }
+
         return result;
     }
 
