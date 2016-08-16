@@ -9,10 +9,7 @@ import com.myproject.sample.locator.UserStorageResourceLocator;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.util.ProjectFileUtils;
 import com.myproject.sample.xmlmodel.*;
-import org.faceless.pdf2.PDFImage;
-import org.faceless.pdf2.PDFPage;
-import org.faceless.pdf2.PDFStyle;
-import org.faceless.pdf2.StandardFont;
+import org.faceless.pdf2.*;
 
 
 import javax.inject.Inject;
@@ -20,7 +17,6 @@ import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.io.*;
 
-//TODO: fix processed file creation
 //TODO: REMOVE CODE DUPLICATION
 
 @Processor("PDF")
@@ -43,16 +39,19 @@ public class BfoProcessor implements ProjectProcessor {
             throw new UnsuccessfulProcessingException(je);
         }
 
-        PDFPage pdfCanvas = new PDFPage(projectXml.getWidth(), projectXml.getHeight());
+        PDF pdf = new PDF();
+        PDFPage pdfCanvas = pdf.newPage(projectXml.getWidth(), projectXml.getHeight());
 
         try {
             processXmlContainer(projectXml, pdfCanvas, project);
         }catch (IOException ioe){throw new UnsuccessfulProcessingException(ioe);}
 
-        File processed = userLocator.locate(project, "processed" + File.separator + "processed.pdf");
-        processed.mkdir();
+        File processedFolder = userLocator.locate(project, "processed");
+        processedFolder.mkdir();
+        File processed = new File(processedFolder.getAbsolutePath() + File.separator + "processed.pdf");
+
         try(OutputStream out = new FileOutputStream(processed)){
-            pdfCanvas.getPDF().render(out);
+            pdf.render(out);
         }catch (IOException ioe){
             throw new UnsuccessfulProcessingException(ioe);
         }
