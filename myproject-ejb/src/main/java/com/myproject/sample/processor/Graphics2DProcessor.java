@@ -1,6 +1,5 @@
 package com.myproject.sample.processor;
 
-import com.myproject.sample.Processor;
 import com.myproject.sample.imgprocess.FactoryProducedScaler;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.ImageScaler;
@@ -17,7 +16,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Deprecated
 @Processor("PNG")

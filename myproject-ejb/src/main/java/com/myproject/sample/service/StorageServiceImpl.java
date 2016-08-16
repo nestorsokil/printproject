@@ -1,6 +1,6 @@
 package com.myproject.sample.service;
 
-import com.myproject.sample.Processor;
+import com.myproject.sample.processor.Processor;
 import com.myproject.sample.dao.StorageDao;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.model.Project;
@@ -12,8 +12,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Qualifier;
 import java.io.*;
 import java.util.Calendar;
 

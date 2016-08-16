@@ -1,6 +1,5 @@
 package com.myproject.sample.processor;
 
-import com.myproject.sample.Processor;
 import com.myproject.sample.canvas.AbstractCanvas;
 import com.myproject.sample.canvas.PdfCanvas;
 import com.myproject.sample.canvas.PngCanvas;

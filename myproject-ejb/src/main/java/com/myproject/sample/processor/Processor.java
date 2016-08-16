@@ -1,4 +1,4 @@
-package com.myproject.sample;
+package com.myproject.sample.processor;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.ElementType;

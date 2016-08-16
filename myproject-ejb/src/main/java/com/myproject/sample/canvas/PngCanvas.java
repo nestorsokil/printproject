@@ -19,13 +19,9 @@ public class PngCanvas implements AbstractCanvas {
     }
 
     @Override public void drawImage(ImageXml imageXml, File tempImage) throws IOException {
-        BufferedImage imgBuff = createBuffFromFile(tempImage);
+        BufferedImage imgBuff = ImageIO.read(tempImage);
         tempImage.delete();
         graphics.drawImage(imgBuff, imageXml.getX(), imageXml.getY(), null);
-    }
-
-    private BufferedImage createBuffFromFile(File path) throws IOException {
-        return ImageIO.read(path);
     }
 
     @Override public void drawText(TextXml textXml) {

@@ -22,6 +22,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +47,14 @@ public class ProjectDownloader {
         for(Project p : projects){
             ProcessedProjectDto dto = new ProcessedProjectDto(p);
             File img = locator.locate(p, "processed"+File.separator+"processed.png");
-            byte[] bytes = IOUtils.toByteArray(new FileInputStream(img));
-            dto.setThumbnail(Base64.encodeBytes(bytes));
-            result.add(dto);
+            try(InputStream is = new FileInputStream(img)) {
+                byte[] bytes = IOUtils.toByteArray(is);
+                dto.setThumbnail(Base64.encodeBytes(bytes));
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+            } finally {
+                result.add(dto);
+            }
         }
 
         return result;

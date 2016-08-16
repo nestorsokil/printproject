@@ -1,6 +1,5 @@
 package com.myproject.sample.processor;
 
-import com.myproject.sample.Processor;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.imgprocess.FactoryProducedScaler;
 import com.myproject.sample.imgprocess.ImageScaler;
