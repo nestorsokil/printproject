@@ -49,4 +49,9 @@ public abstract class AbstractXmlElement {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    protected void setElementAbsoluteCoordinates(AbstractXmlContainer parent){
+        setX(parent.getX() + x);
+        setY(parent.getY() + y);
+    }
 }

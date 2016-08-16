@@ -1,7 +1,6 @@
 package com.myproject.sample.xmlmodel;
 
 import javax.xml.bind.annotation.XmlElement;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,5 +36,20 @@ public abstract class AbstractXmlContainer extends AbstractXmlElement {
 
     public void setTexts(List<TextXml> texts) {
         this.texts = texts;
+    }
+
+    public void fixAllChildCoordinates(){
+        for(ImageXml el: images){
+            el.setElementAbsoluteCoordinates(this);
+        }
+
+        for(TextXml el: texts){
+            el.setElementAbsoluteCoordinates(this);
+        }
+
+        for(BlockXml el: blocks){
+            el.setElementAbsoluteCoordinates(this);
+            el.fixAllChildCoordinates();
+        }
     }
 }

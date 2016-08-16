@@ -46,13 +46,16 @@ public class ProjectDownloader {
         return result;
     }
 
-    @Path("/{id}")
+    @Path("/{id}/{ext}")
     @GET
-    public Response downloadFile(@PathParam("id") String id){
+    public Response downloadPng(@PathParam("id") String id, @PathParam("ext") String extension){
         Project project = projectService.findById(id);
-        File file = locator.locate(project, "processed" + File.separator + "processed.png");
+        File file = locator.locate(project, "processed" + File.separator + "processed." + extension);
+        if(!file.exists())
+            return Response.status(404).entity("File not found").build();
+
         Response.ResponseBuilder responseBuilder = Response.ok(file);
-        responseBuilder.header("Content-Disposition", "attachment; filename=\"" + "processed.png" + "\"");
+        responseBuilder.header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
         return responseBuilder.build();
     }
 }

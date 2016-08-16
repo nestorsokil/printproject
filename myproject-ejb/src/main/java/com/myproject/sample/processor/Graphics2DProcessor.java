@@ -60,26 +60,23 @@ public class Graphics2DProcessor implements ProjectProcessor{
 
     private void processXmlContainer(AbstractXmlContainer containerXml, Graphics2D canvas, Project project)
             throws IOException{
-        List<ImageXml> images = containerXml.getImages();
-        for(ImageXml im : images){
+        for(ImageXml im : containerXml.getImages()){
             setElementAbsoluteCoordinates(containerXml, im);
             drawImage(im, canvas, project);
         }
 
-        List<TextXml> texts = containerXml.getTexts();
-        for(TextXml tx : texts){
+        for(TextXml tx : containerXml.getTexts()){
             setElementAbsoluteCoordinates(containerXml, tx);
             drawText(tx, canvas);
         }
 
-        List<BlockXml> blocks = containerXml.getBlocks();
-        for(BlockXml bl : blocks){
+        for(BlockXml bl : containerXml.getBlocks()){
             setElementAbsoluteCoordinates(containerXml, bl);
             processXmlContainer(bl, canvas, project);
         }
     }
 
-    private void setElementAbsoluteCoordinates(AbstractXmlElement parent, AbstractXmlElement child){
+    private void setElementAbsoluteCoordinates(AbstractXmlContainer parent, AbstractXmlElement child){
         child.setX(parent.getX() + child.getX());
         child.setY(parent.getY() + child.getY());
     }

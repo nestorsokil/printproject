@@ -23,6 +23,10 @@
                 	<a href="projects.jsp">My Projects</a>
                 </c:if>
 
+        <% if (request.isUserInRole("ADMIN")) { %>
+        		<a href="admin/adm-page.jsp">Admin Page</a>
+        		<% } %>
+
     	<div id="files"></div>
 
         <form action="rest/upload" method="post" enctype="multipart/form-data">

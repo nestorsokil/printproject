@@ -60,26 +60,23 @@ public class BfoProcessor implements ProjectProcessor {
 
     private void processXmlContainer(AbstractXmlContainer containerXml, PDFPage canvas, Project project)
             throws IOException{
-        java.util.List<ImageXml> images = containerXml.getImages();
-        for(ImageXml im : images){
+        for(ImageXml im : containerXml.getImages()){
             setElementAbsoluteCoordinates(containerXml, im);
             drawImage(im, canvas, project);
         }
 
-        java.util.List<TextXml> texts = containerXml.getTexts();
-        for(TextXml tx : texts){
+        for(TextXml tx : containerXml.getTexts()){
             setElementAbsoluteCoordinates(containerXml, tx);
             drawText(tx, canvas);
         }
 
-        java.util.List<BlockXml> blocks = containerXml.getBlocks();
-        for(BlockXml bl : blocks){
+        for(BlockXml bl : containerXml.getBlocks()){
             setElementAbsoluteCoordinates(containerXml, bl);
             processXmlContainer(bl, canvas, project);
         }
     }
 
-    private void setElementAbsoluteCoordinates(AbstractXmlElement parent, AbstractXmlElement child){
+    private void setElementAbsoluteCoordinates(AbstractXmlContainer parent, AbstractXmlElement child){
         child.setX(parent.getX() + child.getX());
         child.setY(parent.getY() + child.getY());
     }
@@ -113,7 +110,7 @@ public class BfoProcessor implements ProjectProcessor {
 
     private void drawText(TextXml textXml, PDFPage canvas){
         PDFStyle normal = new PDFStyle();
-        normal.setFont(new StandardFont(StandardFont.TIMES), 12);
+        normal.setFont(new StandardFont(StandardFont.TIMES), textXml.getFontSize());
         normal.setFillColor(Color.black);
         normal.setTextLineSpacing(1.5f);
         canvas.setStyle(normal);

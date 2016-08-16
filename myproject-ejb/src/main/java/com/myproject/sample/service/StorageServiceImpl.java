@@ -23,7 +23,7 @@ public class StorageServiceImpl implements StorageService{
 
     @Inject private ProjectService projectService;
 
-    @Inject @Processor("PDF") private ProjectProcessor processor;
+    @Inject @Processor("Basic") private ProjectProcessor processor;
 
 
     @Override
