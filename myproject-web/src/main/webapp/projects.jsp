@@ -7,6 +7,7 @@
     		integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous">
     		</script>
 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.js"></script>
     	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
         	    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -17,22 +18,21 @@
     <body>
     	<h3>My Projects</h3>
     	<c:if test="${not empty pageContext.request.userPrincipal}">
-                	<c:out value="${pageContext.request.userPrincipal.name}" /> <nobr />
+                	<c:out value="${pageContext.request.userPrincipal.name}" /> <nobr/>
                 	<a href="${pageContext.request.contextPath}/logout">Log out</a>
                 	<br />
                 	<a href="projects.jsp">My Projects</a>
                 </c:if>
 
-        <% if (request.isUserInRole("ADMIN")) { %>
-        		<a href="admin/adm-page.jsp">Admin Page</a>
-        		<% } %>
+
 
     	<div id="files"></div>
 
-        <form action="rest/upload" method="post" enctype="multipart/form-data">
+        <form id="upload" action="rest/upload" method="post" enctype="multipart/form-data">
             <p>
-               Choose a file : <input type="file" name="file" />
+               Choose a file : <input id="uploadInput" type="file" name="file" />
             </p>
+            <input id="uploadFileName" type="hidden" name="name" value="samplename" />
             <input type="submit" value="Upload" accept=".zip" />
         </form>
 

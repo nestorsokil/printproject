@@ -25,7 +25,8 @@ public class StorageServiceImpl implements StorageService{
 
 
     @Override
-    public String saveProject(User uploader, InputStream fileStream, String fileName) throws IOException {
+    public String saveProject(User uploader, InputStream fileStream, String fileName)
+            throws UnsuccessfulProcessingException {
         Storage userStorage = getStorageById("storage_user");
         Project project = new Project();
         project.setName(FilenameUtils.getBaseName(fileName) + "("
@@ -38,21 +39,17 @@ public class StorageServiceImpl implements StorageService{
         File projectFolder = new File(projectPath);
 
         if(!projectFolder.mkdir())
-            throw new IOException("Could not create folder");
+            throw new UnsuccessfulProcessingException("Could not create folder");
 
         try {
             ProjectFileUtils.unzipProject(fileStream, projectPath);
         }catch (IOException ioe){
             projectFolder.delete();
             projectService.delete(project);
-            throw ioe;
+            throw new UnsuccessfulProcessingException(ioe);
         }
 
-        try {
-            processor.process(project);
-        }catch (UnsuccessfulProcessingException upe){
-            upe.getCause().printStackTrace();
-        }
+        processor.process(project);
         return projectPath;
     }
 

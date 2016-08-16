@@ -2,6 +2,8 @@ $('document').ready(function(){
     if(!!document.getElementById('files')){
         getAllFiles();
     }
+    document.getElementById('uploadInput').onchange = getFilename;
+    $('#upload').on('submit', postFile);
 });
 
 var getAllFiles = function(){
@@ -15,7 +17,19 @@ var getAllFiles = function(){
                 });
 
         list += '</ul>';
+
+        $('ul').remove();
         $('#files').append(list);
 
      });
+}
+
+var getFilename = function(){
+    var name =  document.getElementById('uploadInput').value;
+    document.getElementById('uploadFileName').value = name;
+}
+
+var postFile = function(){
+    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles});
+    return false;
 }
