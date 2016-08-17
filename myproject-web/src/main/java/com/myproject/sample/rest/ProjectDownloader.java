@@ -34,6 +34,15 @@ public class ProjectDownloader {
 
     @Inject private UserStorageResourceLocator locator;
 
+    @Path("/count")
+    @GET
+    public long countProjects(@Context SecurityContext context){
+        User user = userService.findByUsername(context.getUserPrincipal().getName());
+        if(user.getRole().equals("ADMIN"))
+            return projectService.countAll();
+        return projectService.countAllByUser(user);
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ProcessedProjectDto> getFileList(@Context SecurityContext context) throws IOException{
@@ -56,7 +65,6 @@ public class ProjectDownloader {
                 result.add(dto);
             }
         }
-
         return result;
     }
 

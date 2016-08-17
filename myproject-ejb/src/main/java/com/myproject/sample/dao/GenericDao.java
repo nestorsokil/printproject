@@ -2,6 +2,7 @@ package com.myproject.sample.dao;
 
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface GenericDao<T> {
@@ -15,4 +16,6 @@ public interface GenericDao<T> {
     T update(T entity);
 
     List<T> findAll();
+
+    EntityManager getEntityManager();
 }

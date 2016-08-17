@@ -24,6 +24,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Project processor that uses canvases to create images
+ */
 @Processor("Basic")
 public class BasicProcessor implements ProjectProcessor {
 

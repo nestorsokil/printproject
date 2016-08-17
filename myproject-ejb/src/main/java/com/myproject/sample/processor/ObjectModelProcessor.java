@@ -23,6 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * project processor that uses each elements methods to make them "draw themselves"
+ */
 @Processor("Objective")
 public class ObjectModelProcessor implements ProjectProcessor {
     @Inject private XmlParser parser;

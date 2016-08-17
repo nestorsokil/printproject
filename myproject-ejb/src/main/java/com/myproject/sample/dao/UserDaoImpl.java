@@ -20,7 +20,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 
     @Override
     public User findByUsername(String username){
-        //TODO: use criteria api
         return (User) em.createQuery("SELECT u FROM User u WHERE u.username=:uname")
                 .setParameter("uname", username)
                 .getSingleResult();

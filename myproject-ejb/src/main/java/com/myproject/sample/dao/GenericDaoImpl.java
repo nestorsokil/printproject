@@ -46,4 +46,8 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T>{
         return em.createQuery("from " + entityClass.getSimpleName()).getResultList();
     }
 
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 }

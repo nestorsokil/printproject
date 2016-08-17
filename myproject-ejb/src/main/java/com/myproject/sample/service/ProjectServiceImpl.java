@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.List;
 
 public class ProjectServiceImpl extends GenericServiceImpl<Project> implements ProjectService {
 
@@ -71,5 +72,41 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
             session.close();
             connection.close();
         }catch (JMSException je){je.printStackTrace();}
+    }
+
+
+    //for pagination
+
+    @Override
+    public long countAll(){
+        return (long) dao.getEntityManager().createQuery("Select count(*) from Project").getSingleResult();
+    }
+
+    @Override
+    public long countAllByUser(User user){
+        return (long) dao.getEntityManager().createQuery("Select count(*) from Project p where p.user = :u")
+                .setParameter("u", user)
+                .getSingleResult();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Project> getResultsPage(int startIndex, int pageSize){
+        return dao.getEntityManager()
+                .createQuery("from Project")
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Project> getResultsPageByUser(int startIndex, int pageSize, User user){
+        return dao.getEntityManager()
+                .createQuery("Select p from Project p where user = :u")
+                .setParameter("u", user)
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 }
