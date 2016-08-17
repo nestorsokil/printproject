@@ -50,6 +50,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
         }
 
         processor.process(project);
+        //OR
+        //invokeMdbProcessor(project);
         return projectPath;
     }
 
