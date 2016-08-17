@@ -9,6 +9,4 @@ import java.io.InputStream;
 
 public interface StorageService {
     Storage getStorageById(String id);
-
-    String saveProject(User uploader, InputStream fileStream, String fileName) throws UnsuccessfulProcessingException;
 }

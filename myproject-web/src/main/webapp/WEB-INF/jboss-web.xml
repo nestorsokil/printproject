@@ -7,4 +7,18 @@
 
     <security-domain>java:/jaas/db-domain</security-domain>
 
+    <resource-ref>
+        <res-ref-name>myProjectConnectionFactory</res-ref-name>
+        <res-type>javax.jms.QueueConnectionFactory</res-type>
+        <jndi-name>java:jboss/myProjectConnectionFactory</jndi-name>
+    </resource-ref>
+
+    <resource-ref>
+        <res-ref-name>fileUploadQueue</res-ref-name>
+        <res-type>javax.jms.Destination</res-type>
+        <jndi-name>java:/jms/queue/fileUploadQueue</jndi-name>
+    </resource-ref>
+
+
+
 </jboss-web>

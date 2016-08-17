@@ -3,15 +3,26 @@ package com.myproject.sample.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.*;
 
 @Entity
-public class Project {
+public class Project implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @GenericGenerator(name="uuid_gen", strategy = "com.myproject.sample.model.UUIDGenerator")
+    @GenericGenerator(name = "uuid_gen", strategy = "com.myproject.sample.model.UUIDGenerator")
     @GeneratedValue(generator = "uuid_gen")
     private String id;
 
     private String name;
+
+    @ManyToOne
+    private Storage storage;
+
+    @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false)
+    private User user;
 
     public String getId() {
         return id;
@@ -20,13 +31,6 @@ public class Project {
     public void setId(String id) {
         this.id = id;
     }
-
-    @ManyToOne
-    private Storage storage;
-
-    @ManyToOne
-    @JoinColumn(name = "app_user_id", nullable = false)
-    private User user;
 
     public String getName() {
         return name;
@@ -50,5 +54,15 @@ public class Project {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    private void writeObject(ObjectOutputStream o) throws IOException {
+        o.writeObject(id);
+        o.writeObject(name);
+    }
+
+    private void readObject(ObjectInputStream o) throws IOException, ClassNotFoundException {
+        id = (String) o.readObject();
+        name = (String) o.readObject();
     }
 }

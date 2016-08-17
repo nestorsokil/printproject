@@ -3,6 +3,7 @@ package com.myproject.sample.rest;
 
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import com.myproject.sample.model.User;
+import com.myproject.sample.service.ProjectService;
 import com.myproject.sample.service.StorageService;
 import com.myproject.sample.service.UserService;
 
@@ -22,7 +23,7 @@ import java.io.*;
 public class ProjectUploader {
     @Inject private UserService userService;
 
-    @Inject private StorageService storageService;
+    @Inject private ProjectService projectService;
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -33,7 +34,7 @@ public class ProjectUploader {
 
         String uploadFilePath;
         try(InputStream is = new ByteArrayInputStream(form.getFileData())) {
-            uploadFilePath = storageService.saveProject(uploader, is, form.getName());
+            uploadFilePath = projectService.saveProject(uploader, is, form.getName());
         }catch (UnsuccessfulProcessingException | IOException exc){
             exc.getCause().printStackTrace();
             return Response.status(400).entity("project processing failed").build();
