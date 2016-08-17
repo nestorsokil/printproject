@@ -11,10 +11,7 @@ import org.jboss.resteasy.util.Base64;
 
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,14 +42,17 @@ public class ProjectDownloader {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ProcessedProjectDto> getFileList(@Context SecurityContext context) throws IOException{
+    public List<ProcessedProjectDto> getFileList(@Context SecurityContext context,
+                                                 @QueryParam("page") int page,
+                                                 @QueryParam("size") int size) throws IOException{
         User user = userService.findByUsername(context.getUserPrincipal().getName());
+        int startIndex = page * size;
         List<ProcessedProjectDto> result = new ArrayList<>();
         List<Project> projects;
         if(user.getRole().equals("ADMIN"))
-            projects = projectService.findAll();
+            projects = projectService.getResultsPage(startIndex, size);
         else
-            projects = user.getProjects();
+            projects = projectService.getResultsPageByUser(startIndex, size, user);
         for(Project p : projects){
             ProcessedProjectDto dto = new ProcessedProjectDto(p);
             File img = locator.locate(p, "processed"+File.separator+"processed.png");

@@ -6,9 +6,11 @@ $('document').ready(function(){
     $('#upload').on('submit', postFile);
 });
 
-var getAllFiles = function(){
+var getAllFiles = function(page, size){
     var list = '<ul>';
-    $.get('rest/download', function( response ){
+    //hardcoded, getting page with first 10 results
+    console.log("getting page");
+    $.get('rest/download?page='+0+'&size='+10, function( response ){
         $.each(response, function(i, project){
             list += '<li><img style="border: 1px solid black;" width="100" height="100" src="data:image/png;base64,'
                                                + project.thumbnail + '" /></li>'
@@ -23,6 +25,12 @@ var getAllFiles = function(){
         $('#files').append(list);
 
      });
+}
+
+var getProjectCount = function(){
+    var result;
+    $.get('rest/download/count', function(response){result = response;});
+    return result;
 }
 
 var getFilename = function(){
