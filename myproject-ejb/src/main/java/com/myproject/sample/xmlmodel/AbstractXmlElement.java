@@ -1,8 +1,14 @@
 package com.myproject.sample.xmlmodel;
 
+import com.myproject.sample.canvas.AbstractCanvas;
+import org.faceless.pdf2.PDFPage;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractXmlElement {
@@ -54,4 +60,8 @@ public abstract class AbstractXmlElement {
         setX(parent.getX() + x);
         setY(parent.getY() + y);
     }
+
+    public abstract void draw(PDFPage page, String projectTempFolderPath) throws IOException;
+
+    public abstract void draw(Graphics2D graphics, String projectTempFolderPath) throws IOException;
 }

@@ -10,10 +10,11 @@ var getAllFiles = function(){
     var list = '<ul>';
     $.get('rest/download', function( response ){
         $.each(response, function(i, project){
-            list += '<li>' + project.name + '</li>'
-                + '<img width="100" height="100" src="data:image/png;base64,' + project.thumbnail + '" /><br />'
+            list += '<li><img style="border: 1px solid black;" width="100" height="100" src="data:image/png;base64,'
+                                               + project.thumbnail + '" /></li>'
+                + project.name + '<br />'
                 + '<a href="rest/download/' + project.id + '/png">Download PNG</a><br />'
-                + '<a href="rest/download/' + project.id + '/pdf">Download PDF</a>';
+                + '<a href="rest/download/' + project.id + '/pdf">Download PDF</a><hr align="left" width="200" />';
                 });
 
         list += '</ul>';

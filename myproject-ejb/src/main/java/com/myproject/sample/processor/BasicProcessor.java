@@ -70,6 +70,9 @@ public class BasicProcessor implements ProjectProcessor {
     private BufferedImage processPng(ProjectXml projectXml) throws IOException{
         BufferedImage image = new BufferedImage(projectXml.getWidth(), projectXml.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics2D = image.createGraphics();
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.fillRect(0,0,projectXml.getWidth(),projectXml.getHeight());
+        graphics2D.setColor(Color.BLACK);
         AbstractCanvas canvas = new PngCanvas(graphics2D);
         processXmlContainer(projectXml, canvas);
         return image;

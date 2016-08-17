@@ -25,6 +25,7 @@ public class PngCanvas implements AbstractCanvas {
     }
 
     @Override public void drawText(TextXml textXml) {
+        graphics.setFont(new Font("TimesRoman", Font.PLAIN, textXml.getFontSize()));
         graphics.drawString(textXml.getValue(), textXml.getX(), textXml.getY());
     }
 }

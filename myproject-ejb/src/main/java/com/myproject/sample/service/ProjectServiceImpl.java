@@ -22,7 +22,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
 
     @Inject private StorageService storageService;
 
-    @Inject @Processor("Basic") private ProjectProcessor processor;
+    @Inject @Processor("Objective") private ProjectProcessor processor;
 
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName)
