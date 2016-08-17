@@ -60,6 +60,7 @@ public class ObjectModelProcessor implements ProjectProcessor {
 
             PDF pdf = new PDF();
             PDFPage pdfPage = pdf.newPage(projectXml.getWidth(), projectXml.getHeight());
+            pdfPage.setUnits(PDFPage.UNITS_POINTS, PDFPage.ORIGIN_PAGETOP);
             projectXml.draw(pdfPage, pathToTempFolder);
             File processedPdf = new File(processedFolder, "processed.pdf");
             OutputStream out = new FileOutputStream(processedPdf);
@@ -68,6 +69,9 @@ public class ObjectModelProcessor implements ProjectProcessor {
 
             BufferedImage image = new BufferedImage(projectXml.getWidth(), projectXml.getHeight(), BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics2D = image.createGraphics();
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.fillRect(0,0,projectXml.getWidth(),projectXml.getHeight());
+            graphics2D.setColor(Color.BLACK);
             projectXml.draw(graphics2D, pathToTempFolder);
             File processedPng = new File(processedFolder, "processed.png");
             ImageIO.write(image, "png", processedPng);

@@ -55,7 +55,7 @@ public class ProjectDownloader {
             projects = projectService.getResultsPageByUser(startIndex, size, user);
         for(Project p : projects){
             ProcessedProjectDto dto = new ProcessedProjectDto(p);
-            File img = locator.locate(p, "processed"+File.separator+"processed.png");
+            File img = locator.locate(p, "processed" + File.separator + "processed.png");
             try(InputStream is = new FileInputStream(img)) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 dto.setThumbnail(Base64.encodeBytes(bytes));
