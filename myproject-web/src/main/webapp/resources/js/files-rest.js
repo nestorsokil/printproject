@@ -15,7 +15,8 @@ var getAllFiles = function(page, size){
                                                + project.thumbnail + '" /></li>'
                 + project.name + '<br />'
                 + '<a href="rest/download/' + project.id + '/png">Download PNG</a><br />'
-                + '<a href="rest/download/' + project.id + '/pdf">Download PDF</a><hr align="left" width="200" />';
+                + '<a href="rest/download/' + project.id + '/pdf">Download PDF</a><br />'
+                + '<a href="rest/delete/'   + project.id + '">Delete</a><hr align="left" width="200" />';
                 });
 
         list += '</ul>';
@@ -39,7 +40,7 @@ var getFilename = function(){
 
 var postFile = function(){
     $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles, error: function(e){
-        confirm(e.entity);
+        confirm("Error processing project");
     }});
     return false;
 }

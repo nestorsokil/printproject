@@ -1,6 +1,7 @@
 package com.myproject.sample.service;
 
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
+import com.myproject.sample.locator.UserStorageResourceLocator;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.Storage;
 import com.myproject.sample.model.User;
@@ -25,6 +26,16 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
     @Inject private StorageService storageService;
 
     @Inject @Processor("Objective") private ProjectProcessor processor;
+
+    @Inject private UserStorageResourceLocator userStorageResourceLocator;
+
+    @Override public void delete(Project entity) {
+        File projectFolder = userStorageResourceLocator.locate(entity, UserStorageResourceLocator.FOLDER_ROOT);
+        try {
+            FileUtils.deleteDirectory(projectFolder);
+        }catch (IOException ioe){ioe.printStackTrace();}
+        super.delete(entity);
+    }
 
     @Override
     public String saveProject(User uploader, InputStream fileStream, String fileName)

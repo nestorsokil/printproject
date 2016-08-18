@@ -70,7 +70,7 @@ public class ProjectDownloader {
 
     @Path("/{id}/{ext}")
     @GET
-    public Response downloadPng(@PathParam("id") String id, @PathParam("ext") String extension){
+    public Response downloadProcessed(@PathParam("id") String id, @PathParam("ext") String extension){
         Project project = projectService.findById(id);
         File file = locator.locate(project, "processed" + File.separator + "processed." + extension);
         if(!file.exists())

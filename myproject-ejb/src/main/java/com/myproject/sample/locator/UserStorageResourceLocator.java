@@ -10,6 +10,7 @@ import java.io.File;
 public class UserStorageResourceLocator {
     @Inject private ApplicationConfigurator appConfig;
 
+    public static String FOLDER_ROOT = "";
     public File locate(Project project, String filename){
         return new File(appConfig.getProperty(AppProperty.USER_STORAGE_PATH)
                 + File.separator + project.getId() + File.separator + filename);
