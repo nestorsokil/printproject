@@ -47,6 +47,7 @@ public class ConfigurationController {
             fos.write(data);
         }catch (IOException ioe){ioe.printStackTrace();}
 
+        config.invalidate();
         return Response.status(200).entity("Configuration saved").build();
     }
 

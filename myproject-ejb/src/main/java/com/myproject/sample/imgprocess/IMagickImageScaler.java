@@ -1,13 +1,5 @@
 package com.myproject.sample.imgprocess;
 
-import com.myproject.sample.config.AppProperty;
-import com.myproject.sample.config.ApplicationConfigurator;
-import com.myproject.sample.config.ApplicationConfiguratorImpl;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

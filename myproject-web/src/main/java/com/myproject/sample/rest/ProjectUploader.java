@@ -36,7 +36,7 @@ public class ProjectUploader {
         try(InputStream is = new ByteArrayInputStream(form.getFileData())) {
             uploadFilePath = projectService.saveProject(uploader, is, form.getName());
         }catch (UnsuccessfulProcessingException | IOException exc){
-            exc.getCause().printStackTrace();
+            exc.printStackTrace();
             return Response.status(400).entity("project processing failed").build();
         }
         return Response.status(200).entity("Project saved to " + uploadFilePath).build();

@@ -6,7 +6,6 @@ import com.myproject.sample.service.ProjectService;
 import com.myproject.sample.service.UserService;
 
 import javax.inject.Inject;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

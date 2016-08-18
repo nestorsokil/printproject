@@ -5,7 +5,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

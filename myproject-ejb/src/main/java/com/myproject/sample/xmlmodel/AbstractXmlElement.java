@@ -1,14 +1,11 @@
 package com.myproject.sample.xmlmodel;
 
-import com.myproject.sample.canvas.AbstractCanvas;
-import org.faceless.pdf2.PDFPage;
+import com.myproject.sample.canvas.ICanvas;
+import com.myproject.sample.exception.UnsuccessfulProcessingException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractXmlElement {
@@ -56,12 +53,10 @@ public abstract class AbstractXmlElement {
         this.height = height;
     }
 
+    public abstract void drawOnCanvas(ICanvas canvas) throws UnsuccessfulProcessingException;
+
     protected void setElementAbsoluteCoordinates(AbstractXmlContainer parent){
         setX(parent.getX() + x);
         setY(parent.getY() + y);
     }
-
-    public abstract void draw(PDFPage page, String projectTempFolderPath) throws IOException;
-
-    public abstract void draw(Graphics2D graphics, String projectTempFolderPath) throws IOException;
 }

@@ -4,6 +4,8 @@ import com.myproject.sample.imgprocess.FactoryProducedScaler;
 import com.myproject.sample.imgprocess.Graphics2DImageScaler;
 import com.myproject.sample.imgprocess.IMagickImageScaler;
 import com.myproject.sample.imgprocess.ImageScaler;
+
+import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -12,9 +14,9 @@ public class ScalerBeanFactory {
 
     @Produces
     @FactoryProducedScaler
-    public ImageScaler getScalerBean(){
+    public ImageScaler getScalerBean(@New IMagickImageScaler imagick, @New Graphics2DImageScaler graph2D){
         if(applicationConfigurator.getScalerBeanQualifier().equals(ScalerType.IMAGE_MAGICK_SCALER))
-            return new IMagickImageScaler(applicationConfigurator.getProperty(AppProperty.IM_HOME));
-        return new Graphics2DImageScaler();
+            return imagick;
+        return graph2D;
     }
 }

@@ -4,4 +4,8 @@ public interface ApplicationConfigurator {
     String getProperty(AppProperty property);
 
     ScalerType getScalerBeanQualifier();
+
+    GeneratedSourcesType getCanvasBeanQualifier();
+
+    void invalidate();
 }
