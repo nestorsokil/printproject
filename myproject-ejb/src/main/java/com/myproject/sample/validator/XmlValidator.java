@@ -21,7 +21,7 @@ public class XmlValidator {
     public void validate(InputStream xml) throws IOException, SAXException{
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         File xsd = new File(appConfig.getProperty(AppProperty.JBOSS_CONFIG_DIR)
-                + File.separator + "validation.schema.xsd");
+                + File.separator + "validation-schema.xsd");
 
         Schema schema = factory.newSchema(xsd);
         Validator validator = schema.newValidator();

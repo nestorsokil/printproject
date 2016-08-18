@@ -12,13 +12,12 @@ import com.myproject.sample.validator.XmlValidator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jms.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Calendar;
 import java.util.List;
 
@@ -67,12 +66,18 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
         }
 
         //TODO: fix validation
-       /* try(InputStream is = new FileInputStream(userStorageResourceLocator.locate(project, "project.xml"))){
+        try(InputStream is = new FileInputStream(userStorageResourceLocator.locate(project, "project.xml"))){
             xmlValidator.validate(is);
-        }catch (IOException | SAXException exc){
+        }catch (SAXException exc){
             exc.printStackTrace();
-            throw new UnsuccessfulProcessingException("XML is not present or its validation failed");
-        }*/
+            throw new UnsuccessfulProcessingException("validation failed");
+        }catch (FileNotFoundException fe){
+            fe.printStackTrace();
+            throw new UnsuccessfulProcessingException("project.xml not found");
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            throw new UnsuccessfulProcessingException("schema not found?");
+        }
 
         processor.process(project);
         //OR
