@@ -1,16 +1,23 @@
 $('document').ready(function(){
-    if(!!document.getElementById('files')){
-        getAllFiles();
-    }
+    if(!!document.getElementById('files'))
+        getAllFiles(0, 5);
     document.getElementById('uploadInput').onchange = getFilename;
     $('#upload').on('submit', postFile);
 });
 
+var postFile = function(){
+    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles(0, 5), error: function(e){
+        confirm("Error processing project");
+    }});
+    return false;
+}
+
 var getAllFiles = function(page, size){
+    console.log(page + " " + size);
     var list = '<ul>';
-    //hardcoded, getting page with first 10 results
-    $.get('rest/download?page='+0+'&size='+10, function( response ){
+    $.get('rest/download?page='+page+'&size='+size, function( response ){
         $.each(response, function(i, project){
+            console.log("cycle!");
             list += '<li><img style="border: 1px solid black;" width="100" height="100" src="data:image/png;base64,'
                                                + project.thumbnail + '" /></li>'
                 + project.name + '<br />'
@@ -23,23 +30,27 @@ var getAllFiles = function(page, size){
         $('ul').remove();
         $('#files').append(list);
 
+        displayPageNumbers();
      });
 }
 
-var getProjectCount = function(){
-    var result;
-    $.get('rest/download/count', function(response){result = response;});
-    return result;
+var displayPageNumbers = function(){
+    getProjectCount(function(count){
+        var content = "";
+        for(var i=0; i<(count/5); i++)
+            content += '<a href="#" class="getPage" onClick="getAllFiles('+i+',5)">' + (i+1) + '</a><nobr />';
+        $('#pages a').remove();
+        $('#pages').append(content);
+    });
+}
+
+var getProjectCount = function(callback){
+    $.get('rest/download/count', function(response){
+        callback(response);
+    });
 }
 
 var getFilename = function(){
     var name =  document.getElementById('uploadInput').value;
     document.getElementById('uploadFileName').value = name;
-}
-
-var postFile = function(){
-    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles, error: function(e){
-        confirm("Error processing project");
-    }});
-    return false;
 }

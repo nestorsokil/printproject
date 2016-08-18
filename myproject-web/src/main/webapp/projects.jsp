@@ -28,6 +28,8 @@
 
     	<div id="files"></div>
 
+    	<div id="pages"></div>
+
         <form id="upload" action="rest/upload" method="post" enctype="multipart/form-data">
             <p>
                Choose a file : <input id="uploadInput" type="file" name="file" />
