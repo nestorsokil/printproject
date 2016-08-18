@@ -7,6 +7,7 @@ import com.myproject.sample.model.User;
 import com.myproject.sample.processor.Processor;
 import com.myproject.sample.processor.ProjectProcessor;
 import com.myproject.sample.util.ProjectFileUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -46,7 +47,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
             ProjectFileUtils.unzipProject(fileStream, projectPath);
         }catch (IOException ioe){
             projectFolder.delete();
-            this.delete(project);
+            dao.delete(project);
             throw new UnsuccessfulProcessingException(ioe);
         }
 

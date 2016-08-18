@@ -25,8 +25,10 @@ public class ProjectFileUtils {
 
     public static void unzipProject(InputStream fileStream, String projectPath) throws IOException{
         try (ZipInputStream zipIn = new ZipInputStream(fileStream)){
-
             ZipEntry entry = zipIn.getNextEntry();
+            if(entry == null)
+                throw new IOException("Not a zip");
+
             while (entry != null) {
                 String filePath = projectPath + File.separator + entry.getName();
                 extractFile(zipIn, filePath);

@@ -9,7 +9,6 @@ $('document').ready(function(){
 var getAllFiles = function(page, size){
     var list = '<ul>';
     //hardcoded, getting page with first 10 results
-    console.log("getting page");
     $.get('rest/download?page='+0+'&size='+10, function( response ){
         $.each(response, function(i, project){
             list += '<li><img style="border: 1px solid black;" width="100" height="100" src="data:image/png;base64,'
@@ -39,6 +38,8 @@ var getFilename = function(){
 }
 
 var postFile = function(){
-    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles});
+    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles, error: function(e){
+        confirm(e.entity);
+    }});
     return false;
 }
