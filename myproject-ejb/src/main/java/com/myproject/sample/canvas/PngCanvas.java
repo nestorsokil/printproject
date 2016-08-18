@@ -35,8 +35,10 @@ public class PngCanvas extends AbstractCanvas implements ICanvas{
 
     @Override public void generate(File folder) throws UnsuccessfulProcessingException {
         File processedPng = new File(folder, "processed.png");
+        File thumbnail = new File(folder, "thumbnail.png");
         try {
             ImageIO.write(image, "png", processedPng);
+            imageScaler.scale(processedPng, thumbnail, 200, 200);
         }catch (IOException ioe){
             throw new UnsuccessfulProcessingException("Could not save result");
         }

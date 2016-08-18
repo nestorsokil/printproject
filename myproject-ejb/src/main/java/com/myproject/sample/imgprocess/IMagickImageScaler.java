@@ -1,5 +1,10 @@
 package com.myproject.sample.imgprocess;
 
+import com.myproject.sample.config.AppProperty;
+import com.myproject.sample.config.ApplicationConfigurator;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +14,11 @@ import java.util.List;
 
 public class IMagickImageScaler implements ImageScaler{
     private File IM_DIR;
+    @Inject private ApplicationConfigurator appConfig;
 
-    public IMagickImageScaler(String pathToIM){
-        IM_DIR = new File(pathToIM);
+    @PostConstruct
+    private void init(){
+        IM_DIR = new File(appConfig.getProperty(AppProperty.IM_HOME));
     }
     @Override
     public ImageInfo identify(File source) throws IOException {

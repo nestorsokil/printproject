@@ -6,6 +6,7 @@ import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.ProjectService;
 import com.myproject.sample.service.UserService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.util.Base64;
 
@@ -55,7 +56,7 @@ public class ProjectDownloader {
             projects = projectService.getResultsPageByUser(startIndex, size, user);
         for(Project p : projects){
             ProcessedProjectDto dto = new ProcessedProjectDto(p);
-            File img = locator.locate(p, "processed" + File.separator + "processed.png");
+            File img = locator.locate(p, "processed" + File.separator + "thumbnail.png");
             try(InputStream is = new FileInputStream(img)) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 dto.setThumbnail(Base64.encodeBytes(bytes));
@@ -68,11 +69,13 @@ public class ProjectDownloader {
         return result;
     }
 
-    @Path("/{id}/{ext}")
+    @Path("/{id}")
     @GET
-    public Response downloadProcessed(@PathParam("id") String id, @PathParam("ext") String extension){
+    public Response downloadProcessed(@PathParam("id") String id){
         Project project = projectService.findById(id);
-        File file = locator.locate(project, "processed" + File.separator + "processed." + extension);
+        File file = locator.locate(project, "processed" + File.separator + "processed.png");
+        if(!file.exists())
+            file = locator.locate(project, "processed" + File.separator + "processed.pdf");
         if(!file.exists())
             return Response.status(404).entity("File not found").build();
 

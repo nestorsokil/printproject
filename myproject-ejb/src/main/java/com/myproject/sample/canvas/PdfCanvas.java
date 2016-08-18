@@ -10,9 +10,11 @@ import com.myproject.sample.xmlmodel.ProjectXml;
 import com.myproject.sample.xmlmodel.TextXml;
 import org.faceless.pdf2.*;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class PdfCanvas extends AbstractCanvas implements ICanvas{
@@ -53,8 +55,14 @@ public class PdfCanvas extends AbstractCanvas implements ICanvas{
 
     @Override public void generate(File folder) throws UnsuccessfulProcessingException {
         File processedPdf = new File(folder, "processed.pdf");
+        File thumbnailPng = new File(folder, "thumbnail.png");
+
         try(OutputStream out = new FileOutputStream(processedPdf)) {
             pdf.render(out);
+            PDFParser parser = new PDFParser(pdf);
+            PagePainter pagePainter = parser.getPagePainter(0);
+            BufferedImage image = pagePainter.getImage(200, PDFParser.RGB);
+            ImageIO.write(image, "png", thumbnailPng);
         }catch (IOException ioe){
             ioe.printStackTrace();
             throw new UnsuccessfulProcessingException("Could not save result");
