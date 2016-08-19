@@ -38,8 +38,7 @@ public class BasicProcessor implements ProjectProcessor {
         File processedFolder = userLocator.locate(project, "processed");
         processedFolder.mkdirs();
 
-        canvas.init(projectXml, projectFolder);
-        projectXml.drawOnCanvas(canvas);
+        projectXml.drawOnCanvas(canvas, projectFolder);
         canvas.generate(processedFolder);
     }
 

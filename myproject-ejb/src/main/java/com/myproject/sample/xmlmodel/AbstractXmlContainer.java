@@ -4,6 +4,7 @@ import com.myproject.sample.canvas.ICanvas;
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +43,7 @@ public abstract class AbstractXmlContainer extends AbstractXmlElement {
         this.texts = texts;
     }
 
-    public void drawOnCanvas(ICanvas canvas) throws UnsuccessfulProcessingException {
+    public void drawOnCanvas(ICanvas canvas, File projectFolder) throws UnsuccessfulProcessingException {
         List<AbstractXmlElement> allElements = new ArrayList<>();
         allElements.addAll(images);
         allElements.addAll(texts);
@@ -50,7 +51,7 @@ public abstract class AbstractXmlContainer extends AbstractXmlElement {
 
         for (AbstractXmlElement el: allElements){
             el.setElementAbsoluteCoordinates(this);
-            el.drawOnCanvas(canvas);
+            el.drawOnCanvas(canvas, projectFolder);
         }
     }
 }

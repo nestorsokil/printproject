@@ -61,8 +61,9 @@ public class PdfCanvas extends AbstractCanvas implements ICanvas{
             pdf.render(out);
             PDFParser parser = new PDFParser(pdf);
             PagePainter pagePainter = parser.getPagePainter(0);
-            BufferedImage image = pagePainter.getImage(200, PDFParser.RGB);
+            BufferedImage image = pagePainter.getImage(20, PDFParser.RGB);
             ImageIO.write(image, "png", thumbnailPng);
+            imageScaler.scale(thumbnailPng, thumbnailPng, 200, 200);
         }catch (IOException ioe){
             ioe.printStackTrace();
             throw new UnsuccessfulProcessingException("Could not save result");

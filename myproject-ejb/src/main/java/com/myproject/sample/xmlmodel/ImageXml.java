@@ -6,6 +6,7 @@ import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.File;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ImageXml extends AbstractXmlElement {
@@ -20,7 +21,7 @@ public class ImageXml extends AbstractXmlElement {
         this.imageRef = imageRef;
     }
 
-    @Override public void drawOnCanvas(ICanvas canvas) throws UnsuccessfulProcessingException {
+    @Override public void drawOnCanvas(ICanvas canvas, File projectFolder) throws UnsuccessfulProcessingException {
         canvas.drawImage(this);
     }
 }

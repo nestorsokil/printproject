@@ -5,6 +5,7 @@ import com.myproject.sample.canvas.ICanvas;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.File;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,7 +33,7 @@ public class TextXml extends AbstractXmlElement{
         this.fontSize = fontSize;
     }
 
-    @Override public void drawOnCanvas(ICanvas canvas) {
+    @Override public void drawOnCanvas(ICanvas canvas, File projectFolder) {
         canvas.drawText(this);
     }
 }

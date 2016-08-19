@@ -1,6 +1,10 @@
 package com.myproject.sample.xmlmodel;
 
+import com.myproject.sample.canvas.ICanvas;
+import com.myproject.sample.exception.UnsuccessfulProcessingException;
+
 import javax.xml.bind.annotation.*;
+import java.io.File;
 
 @XmlRootElement(name="project")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -20,5 +24,10 @@ public class ProjectXml extends AbstractXmlContainer{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override public void drawOnCanvas(ICanvas canvas, File projectFolder) throws UnsuccessfulProcessingException {
+        canvas.init(this, projectFolder);
+        super.drawOnCanvas(canvas, projectFolder);
     }
 }

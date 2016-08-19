@@ -6,6 +6,7 @@ import com.myproject.sample.exception.UnsuccessfulProcessingException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.File;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractXmlElement {
@@ -53,7 +54,7 @@ public abstract class AbstractXmlElement {
         this.height = height;
     }
 
-    public abstract void drawOnCanvas(ICanvas canvas) throws UnsuccessfulProcessingException;
+    public abstract void drawOnCanvas(ICanvas canvas, File projectFolder) throws UnsuccessfulProcessingException;
 
     protected void setElementAbsoluteCoordinates(AbstractXmlContainer parent){
         setX(parent.getX() + x);
