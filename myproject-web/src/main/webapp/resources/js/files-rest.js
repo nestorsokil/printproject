@@ -11,7 +11,9 @@ var postFile = function(){
         type: 'post',
         success: function(response){
             console.log(response);
-            getAllFiles(0, 5);
+            var act = $('.getPage.activated');
+            var activePage = $('#pages').index(act) + 1;
+            getAllFiles(activePage, 5);
             },
         error: function(e){
             confirm("Error processing project");
@@ -21,7 +23,6 @@ var postFile = function(){
 
 var getAllFiles = function(page, size){
     $('.getPage.activated').removeClass('activated');
-    $('.getPage').eq(page).addClass('activated');
     var list = '<ul>';
     $.get('rest/download?page='+page+'&size='+size, function( response ){
         $.each(response, function(i, project){
@@ -37,17 +38,18 @@ var getAllFiles = function(page, size){
         $('ul').remove();
         $('#files').append(list);
 
-        displayPageNumbers();
+        displayPageNumbers(page);
      });
 }
 
-var displayPageNumbers = function(){
+var displayPageNumbers = function(activePage){
     getProjectCount(function(count){
         var content = "";
         for(var i=0; i<(count/5); i++)
             content += '<a href="#" class="getPage" onClick="getAllFiles('+i+',5)">' + (i+1) + '</a><nobr />';
         $('#pages a').remove();
         $('#pages').append(content);
+        $('.getPage').eq(activePage).addClass('activated');
     });
 }
 

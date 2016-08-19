@@ -65,7 +65,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project> implements P
             throw new UnsuccessfulProcessingException("Unzipping failed");
         }
 
-        //TODO: fix validation
         try(InputStream is = new FileInputStream(userStorageResourceLocator.locate(project, "project.xml"))){
             xmlValidator.validate(is);
         }catch (SAXException exc){

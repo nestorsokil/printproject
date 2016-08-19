@@ -66,7 +66,6 @@ public class ProjectDownloader {
                 result.add(dto);
             }
         }
-        System.out.println(result.size() + "\n\n\n\n\n\n\n");
         return result;
     }
 
