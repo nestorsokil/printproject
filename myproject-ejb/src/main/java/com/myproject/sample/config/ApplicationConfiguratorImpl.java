@@ -15,10 +15,6 @@ import java.util.Properties;
 public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
     @Inject private StorageDao storageDao;
 
-    private boolean useIm;
-
-    private boolean generatePdf;
-
     private Properties globalProperties;
 
     @PostConstruct private void init(){
@@ -37,16 +33,20 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
         String path =  jbossConfig + File.separator + "application.properties";
         Properties properties = new Properties();
         String imageMagickHome = "";
+        String useIm = "true";
+        String generatePdf = "false";
         try (InputStream in = new FileInputStream(path)){
             properties.load(in);
             imageMagickHome = properties.getProperty("im.home");
-            useIm = Boolean.parseBoolean(properties.getProperty("use.im.scaler"));
-            generatePdf = Boolean.parseBoolean(properties.getProperty("generate.pdf"));
+            useIm = properties.getProperty("use.im.scaler");
+            generatePdf = properties.getProperty("generate.pdf");
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
 
         globalProperties.setProperty(AppProperty.IM_HOME.name(), imageMagickHome);
+        globalProperties.setProperty(AppProperty.USE_IM.name(), useIm);
+        globalProperties.setProperty(AppProperty.GENERATE_PDF.name(), generatePdf);
     }
 
     public String getProperty(AppProperty property){
@@ -54,11 +54,19 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
     }
 
     @Override public ScalerType getScalerBeanQualifier() {
-        return useIm ? ScalerType.IMAGE_MAGICK_SCALER : ScalerType.GRAPHICS_2D_SCALER;
+        return useIM() ? ScalerType.IMAGE_MAGICK_SCALER : ScalerType.GRAPHICS_2D_SCALER;
     }
 
     @Override public GeneratedSourcesType getCanvasBeanQualifier() {
-        return generatePdf ? GeneratedSourcesType.PDF : GeneratedSourcesType.PNG;
+        return generatePdf() ? GeneratedSourcesType.PDF : GeneratedSourcesType.PNG;
+    }
+
+    @Override public boolean useIM() {
+        return Boolean.parseBoolean(globalProperties.getProperty(AppProperty.USE_IM.name()));
+    }
+
+    @Override public boolean generatePdf() {
+        return Boolean.parseBoolean(globalProperties.getProperty(AppProperty.GENERATE_PDF.name()));
     }
 
     @Override public void invalidate() {

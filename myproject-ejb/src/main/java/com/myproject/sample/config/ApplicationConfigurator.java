@@ -7,5 +7,9 @@ public interface ApplicationConfigurator {
 
     GeneratedSourcesType getCanvasBeanQualifier();
 
+    boolean useIM();
+
+    boolean generatePdf();
+
     void invalidate();
 }
