@@ -1,0 +1,11 @@
+.getPage{
+    color: black;
+    margin: 10px;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.getPage.activated{
+    color: white;
+    background-color: black;
+}

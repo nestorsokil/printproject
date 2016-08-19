@@ -6,18 +6,25 @@ $('document').ready(function(){
 });
 
 var postFile = function(){
-    $('#upload').ajaxSubmit({url: 'rest/upload', type: 'post', success: getAllFiles(0, 5), error: function(e){
-        confirm("Error processing project");
-    }});
+    $('#upload').ajaxSubmit({
+        url: 'rest/upload',
+        type: 'post',
+        success: function(response){
+            console.log(response);
+            getAllFiles(0, 5);
+            },
+        error: function(e){
+            confirm("Error processing project");
+        }});
     return false;
 }
 
 var getAllFiles = function(page, size){
-    console.log(page + " " + size);
+    $('.getPage.activated').removeClass('activated');
+    $('.getPage').eq(page).addClass('activated');
     var list = '<ul>';
     $.get('rest/download?page='+page+'&size='+size, function( response ){
         $.each(response, function(i, project){
-            console.log("cycle!");
             list += '<li><img style="border: 1px solid black;" width="100" height="100" src="data:image/png;base64,'
                                                + project.thumbnail + '" /></li>'
                 + project.name + '<br />'
