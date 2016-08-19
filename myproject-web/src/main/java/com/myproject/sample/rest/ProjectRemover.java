@@ -1,5 +1,6 @@
 package com.myproject.sample.rest;
 
+import com.myproject.sample.exception.AccessDeniedException;
 import com.myproject.sample.model.Project;
 import com.myproject.sample.model.User;
 import com.myproject.sample.service.ProjectService;
@@ -20,18 +21,17 @@ public class ProjectRemover {
 
     @Inject private ProjectService projectService;
 
-    //DELETE is better, but GET is easier
+    //DELETE is better, but GET is easier :)
     @GET
     @Path("/{id}")
-    public Response deleteProject(@PathParam("id") String id, @Context SecurityContext context){
+    public Response deleteProject(@PathParam("id") String id, @Context SecurityContext context)
+            throws AccessDeniedException{
         User user = userService.findByUsername(context.getUserPrincipal().getName());
         Project project = projectService.findById(id);
 
         if(!user.equals(project.getUser()))
-            return Response.status(403).entity("Access denied").build();
-
+            throw new AccessDeniedException("Only the owner is allowed to delete a project.");
         projectService.delete(project);
         return Response.status(200).entity("Successfully deleted project").build();
-
     }
 }

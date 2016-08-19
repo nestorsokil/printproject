@@ -29,15 +29,15 @@ public class ProjectUploader {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadProject(
             @MultipartForm FileUploadForm form,
-            @Context SecurityContext context){
+            @Context SecurityContext context) throws UnsuccessfulProcessingException{
         User uploader = userService.findByUsername(context.getUserPrincipal().getName());
 
         String uploadFilePath;
         try(InputStream is = new ByteArrayInputStream(form.getFileData())) {
             uploadFilePath = projectService.saveProject(uploader, is, form.getName());
-        }catch (UnsuccessfulProcessingException | IOException exc){
-            exc.printStackTrace();
-            return Response.status(400).entity("project processing failed").build();
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            throw new UnsuccessfulProcessingException("Unable to read uploaded file");
         }
         return Response.status(200).entity("Project saved to " + uploadFilePath).build();
     }
