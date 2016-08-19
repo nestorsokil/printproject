@@ -1,18 +1,12 @@
 package com.myproject.sample.canvas;
 
 import com.myproject.sample.exception.UnsuccessfulProcessingException;
-import com.myproject.sample.imgprocess.FactoryProducedScaler;
-import com.myproject.sample.imgprocess.ImageScaler;
-import com.myproject.sample.locator.TempStorageResourceLocator;
-import com.myproject.sample.util.ProjectFileUtils;
 import com.myproject.sample.xmlmodel.ImageXml;
 import com.myproject.sample.xmlmodel.ProjectXml;
 import com.myproject.sample.xmlmodel.TextXml;
 import org.faceless.pdf2.*;
 
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;

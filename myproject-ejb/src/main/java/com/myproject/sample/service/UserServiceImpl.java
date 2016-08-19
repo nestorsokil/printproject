@@ -1,7 +1,6 @@
 package com.myproject.sample.service;
 
 import com.myproject.sample.dao.UserDao;
-import com.myproject.sample.model.Storage;
 import com.myproject.sample.model.User;
 
 import javax.inject.Inject;

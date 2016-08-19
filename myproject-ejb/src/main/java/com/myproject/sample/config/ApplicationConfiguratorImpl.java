@@ -54,15 +54,11 @@ public class ApplicationConfiguratorImpl implements ApplicationConfigurator {
     }
 
     @Override public ScalerType getScalerBeanQualifier() {
-        if(useIm)
-            return ScalerType.IMAGE_MAGICK_SCALER;
-        return ScalerType.GRAPHICS_2D_SCALER;
+        return useIm ? ScalerType.IMAGE_MAGICK_SCALER : ScalerType.GRAPHICS_2D_SCALER;
     }
 
     @Override public GeneratedSourcesType getCanvasBeanQualifier() {
-        if(generatePdf)
-            return GeneratedSourcesType.PDF;
-        return GeneratedSourcesType.PNG;
+        return generatePdf ? GeneratedSourcesType.PDF : GeneratedSourcesType.PNG;
     }
 
     @Override public void invalidate() {
