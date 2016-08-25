@@ -1,0 +1,8 @@
+<project name="project_name" width="1920" height="1080">
+	<image x="0" y="0" width="200" height="100" imageRef="Penguins.jpg"/>
+	<text x="200" y="130" width="700" height="50" font-size="20" value="SAMPLE TEXT"/>
+	<block x="200" y="200" width="400" height="400">
+		<image x="0" y="0" width="200" height="200" imageRef="Penguins.jpg"/>
+		<image x="100" y="100" width="200" height="500" imageRef="Tulips.jpg"/>
+	</block>
+</project>

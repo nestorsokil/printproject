@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+
+	<xs:complexType name="projectType">
+		<xs:sequence minOccurs='0' maxOccurs='unbounded'>
+			<xs:element name="image" minOccurs='0' maxOccurs='unbounded' type="imageType"/>
+			<xs:element name="text" minOccurs='0' maxOccurs='unbounded' type="textType"/>
+			<xs:element name="block" minOccurs='0' maxOccurs='unbounded' type="blockType"/>
+		</xs:sequence>
+		
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="width" use="required" type="xs:string"/>
+		<xs:attribute name="height" use="required" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:complexType name="blockType">
+		<xs:sequence minOccurs='0' maxOccurs='unbounded'>
+			<xs:element name="image" minOccurs='0' maxOccurs='unbounded' type="imageType"/>
+			<xs:element name="text" minOccurs='0' maxOccurs='unbounded' type="textType"/>
+			<xs:element name="block" minOccurs='0' maxOccurs='unbounded' type="blockType"/>
+		</xs:sequence>
+			
+		<xs:attribute name="x" use="required" type="xs:string"/>
+		<xs:attribute name="y" use="required" type="xs:string"/>
+		<xs:attribute name="width" use="required" type="xs:string"/>
+		<xs:attribute name="height" use="required" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:complexType name="imageType">
+		<xs:attribute name="x" use="required" type="xs:string"/>
+		<xs:attribute name="y" use="required" type="xs:string"/>
+		<xs:attribute name="width" use="required" type="xs:string"/>
+		<xs:attribute name="height" use="required" type="xs:string"/>
+		<xs:attribute name="imageRef" use="required" type="xs:string"/>
+	</xs:complexType>
+		
+	<xs:complexType name="textType">
+		<xs:attribute name="x" use="required" type="xs:string"/>
+		<xs:attribute name="y" use="required" type="xs:string"/>
+		<xs:attribute name="width" use="required" type="xs:string"/>
+		<xs:attribute name="height" use="required" type="xs:string"/>
+		<xs:attribute name="font-size" use="required" type="xs:string"/>
+		<xs:attribute name="value" use="required" type="xs:string"/>
+	</xs:complexType>
+		
+	<xs:element name="project" type="projectType"></xs:element>
+	
+</xs:schema>
